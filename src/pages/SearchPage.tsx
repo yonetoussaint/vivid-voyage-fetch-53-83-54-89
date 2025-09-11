@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import ProductHeader from '@/components/product/ProductHeader';
 
 import SpaceSavingCategories from '@/components/home/SpaceSavingCategories';
+import TopVendorsCompact from "@/components/home/TopVendorsCompact";
 import SearchRecent from '@/components/search/SearchRecent';
 import PopularSearches from '@/components/home/PopularSearches';
 import SearchPopular from '@/components/search/SearchPopular';
@@ -203,6 +204,8 @@ const SearchPage = () => {
         clearButtonText="× Clear"
         onClearClick={() => toast({ title: "Cleared", description: "Recently viewed items cleared" })}
       />
+
+<TopVendorsCompact/>
       
       <SearchRecent
         searches={recentSearches}
