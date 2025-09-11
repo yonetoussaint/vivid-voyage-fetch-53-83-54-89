@@ -7,13 +7,13 @@ import { useAuthOverlay } from '@/context/AuthOverlayContext';
 import { useProductDetailState } from './useProductDetailState';
 
 // Import sub-components
-import ProductHeaderSection from './sections/ProductHeaderSection';
-import ProductGallerySection from './sections/ProductGallerySection';
-import ProductContentSections from './sections/ProductContentSections';
-import ProductRelatedSection from './sections/ProductRelatedSection';
+import ProductHeaderSection from './ProductHeaderSection';
+import ProductGallerySection from './ProductGallerySection';
+import ProductContentSections from './ProductContentSections';
+import ProductRelatedSection from './ProductRelatedSection';
 import ProductScrollManager from './ProductScrollManager';
 import ProductVariantManager from './ProductVariantManager';
-import ProductStickyComponents from './sections/ProductStickyComponents';
+import ProductStickyComponents from './ProductStickyComponents';
 
 interface ProductDetailLayoutProps {
   product: any;
