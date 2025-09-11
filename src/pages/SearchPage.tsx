@@ -163,12 +163,12 @@ const SearchPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="fixed top-0 left-0 right-0 z-30">
         <ProductHeader forceScrolledState={true} actionButtons={searchActionButtons} />
       </div>
       
-      {/* Content with proper top spacing */}
-      <div style={{ paddingTop: `${headerHeight}px` }}>
+      {/* Content with proper top spacing to account for fixed header */}
+      <div style={{ paddingTop: `${Math.max(headerHeight, 60)}px` }} className="relative">
         <SpaceSavingCategories
         onCategorySelect={handleCategorySelect}
         showHeader={true}
