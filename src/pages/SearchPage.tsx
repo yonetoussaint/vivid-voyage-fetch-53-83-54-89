@@ -33,17 +33,29 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Calculate header height
+  // Calculate header height with better timing
   useEffect(() => {
     const updateHeight = () => {
       if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
+        const height = headerRef.current.getBoundingClientRect().height;
+        console.log('Header height calculated:', height);
+        setHeaderHeight(height);
       }
     };
 
+    // Initial measurement
     updateHeight();
+    
+    // Retry after a short delay to account for rendering
+    const timeoutId = setTimeout(updateHeight, 100);
+    
+    // Also update on resize
     window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateHeight);
+    };
   }, []);
 
   useEffect(() => {
@@ -168,7 +180,7 @@ const SearchPage = () => {
       </div>
       
       {/* Content with proper top spacing to account for fixed header */}
-      <div style={{ paddingTop: `${Math.max(headerHeight, 60)}px` }} className="relative">
+      <div style={{ paddingTop: `${headerHeight || 60}px` }} className="relative">
         <SpaceSavingCategories
         onCategorySelect={handleCategorySelect}
         showHeader={true}
