@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ScanLine, Grid, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ProductHeader from '@/components/product/ProductHeader';
-import SearchFiltersBar from '@/components/search/SearchFiltersBar';
+
 import SpaceSavingCategories from '@/components/home/SpaceSavingCategories';
 import SearchRecent from '@/components/search/SearchRecent';
 import PopularSearches from '@/components/home/PopularSearches';
@@ -172,12 +172,6 @@ const SearchPage = () => {
         <ProductHeader forceScrolledState={true} actionButtons={searchActionButtons} />
       </div>
       
-      <div ref={filtersRef}>
-        <SearchFiltersBar
-          onFilterSelect={handleFilterSelect}
-          activeFilters={activeFilters}
-        />
-      </div>
 
       {/* Content */}
       <SpaceSavingCategories 
