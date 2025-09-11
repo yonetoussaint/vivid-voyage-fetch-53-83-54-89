@@ -1,10 +1,8 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ScanLine, Grid, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ProductHeader from '@/components/product/ProductHeader';
-
 import SpaceSavingCategories from '@/components/home/SpaceSavingCategories';
 import TopVendorsCompact from "@/components/home/TopVendorsCompact";
 import SearchRecent from '@/components/search/SearchRecent';
@@ -22,6 +20,7 @@ const SearchPage = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
   const [recentSearches, setRecentSearches] = useState([
     'iPhone 15 Pro Max',
     'Wireless headphones',
@@ -29,16 +28,16 @@ const SearchPage = () => {
     'Smart watch',
     'Bluetooth speaker'
   ]);
-  
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Calculate header height with better timing
+  // Calculate header height with ResizeObserver for better accuracy
   useEffect(() => {
     const updateHeight = () => {
       if (headerRef.current) {
-        const height = headerRef.current.getBoundingClientRect().height;
+        const height = headerRef.current.offsetHeight;
         console.log('Header height calculated:', height);
         setHeaderHeight(height);
       }
@@ -46,30 +45,49 @@ const SearchPage = () => {
 
     // Initial measurement
     updateHeight();
-    
-    // Retry after a short delay to account for rendering
-    const timeoutId = setTimeout(updateHeight, 100);
-    
-    // Also update on resize
+
+    // Use ResizeObserver to track changes in header size
+    if (headerRef.current) {
+      resizeObserverRef.current = new ResizeObserver(updateHeight);
+      resizeObserverRef.current.observe(headerRef.current);
+    }
+
+    // Also update on window resize to catch any layout changes
     window.addEventListener('resize', updateHeight);
-    
+
     return () => {
-      clearTimeout(timeoutId);
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+      }
       window.removeEventListener('resize', updateHeight);
     };
   }, []);
+
+  // Additional check after content loads
+  useEffect(() => {
+    if (!isLoading) {
+      // Small delay to ensure DOM is fully rendered
+      const timer = setTimeout(() => {
+        if (headerRef.current) {
+          const height = headerRef.current.offsetHeight;
+          setHeaderHeight(height);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     const query = searchParams.get('q');
     if (query) {
       setSearchQuery(query);
     }
-    
+
     // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
-    
+
     return () => clearTimeout(timer);
   }, [searchParams]);
 
@@ -81,9 +99,9 @@ const SearchPage = () => {
         newSearch,
         ...prev.filter(s => s !== newSearch)
       ].slice(0, 5));
-      
+
       navigate(`/search?q=${encodeURIComponent(newSearch)}`);
-      
+
       toast({
         title: "Searching...",
         description: `Looking for "${newSearch}"`,
@@ -137,7 +155,6 @@ const SearchPage = () => {
     });
   };
 
-
   const handleProductClick = (productId: string) => {
     navigate(`/product/${productId}`);
   };
@@ -179,45 +196,45 @@ const SearchPage = () => {
       <div ref={headerRef} className="fixed top-0 left-0 right-0 z-30">
         <ProductHeader forceScrolledState={true} actionButtons={searchActionButtons} />
       </div>
-      
-      {/* Content with proper top spacing to account for fixed header */}
-      <div style={{ paddingTop: `${headerHeight || 60}px` }} className="relative">
-        <SpaceSavingCategories
-        onCategorySelect={handleCategorySelect}
-        showHeader={true}
-        headerTitle="Shop by Category"
-        headerSubtitle="Browse popular categories"
-        headerIcon={Grid}
-        headerViewAllLink="/categories"
-        headerViewAllText="View All"
-        headerTitleTransform="uppercase"
-      />
-      
-      <RecentlyViewed 
-        showHeader={true}
-        headerTitle="Recently Viewed"
-        headerIcon={Clock}
-        headerViewAllLink="/recently-viewed"
-        headerViewAllText="View All"
-        headerTitleTransform="uppercase"
-        showClearButton={true}
-        clearButtonText="× Clear"
-        onClearClick={() => toast({ title: "Cleared", description: "Recently viewed items cleared" })}
-      />
 
-<TopVendorsCompact/>
-      
-      <SearchRecent
-        searches={recentSearches}
-        onSearchSelect={handleRecentSearchSelect}
-        onRemoveSearch={handleRemoveRecentSearch}
-        onClearAll={handleClearAllRecent}
-        headerTitleTransform="uppercase"
-      />
-      
-      <PopularSearches />
-      
-      <BookGenreFlashDeals />
+      {/* Content with proper top spacing to account for fixed header */}
+      <div style={{ paddingTop: `${headerHeight}px` }} className="relative">
+        <SpaceSavingCategories
+          onCategorySelect={handleCategorySelect}
+          showHeader={true}
+          headerTitle="Shop by Category"
+          headerSubtitle="Browse popular categories"
+          headerIcon={Grid}
+          headerViewAllLink="/categories"
+          headerViewAllText="View All"
+          headerTitleTransform="uppercase"
+        />
+
+        <RecentlyViewed 
+          showHeader={true}
+          headerTitle="Recently Viewed"
+          headerIcon={Clock}
+          headerViewAllLink="/recently-viewed"
+          headerViewAllText="View All"
+          headerTitleTransform="uppercase"
+          showClearButton={true}
+          clearButtonText="× Clear"
+          onClearClick={() => toast({ title: "Cleared", description: "Recently viewed items cleared" })}
+        />
+
+        <TopVendorsCompact/>
+
+        <SearchRecent
+          searches={recentSearches}
+          onSearchSelect={handleRecentSearchSelect}
+          onRemoveSearch={handleRemoveRecentSearch}
+          onClearAll={handleClearAllRecent}
+          headerTitleTransform="uppercase"
+        />
+
+        <PopularSearches />
+
+        <BookGenreFlashDeals />
 
         <VoiceSearchOverlay
           isActive={isVoiceActive}
