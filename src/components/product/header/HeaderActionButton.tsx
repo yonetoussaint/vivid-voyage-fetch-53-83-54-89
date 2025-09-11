@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { LucideIcon } from "lucide-react";
 import { HEADER_ICON_SIZE, HEADER_ICON_STROKE_WIDTH } from "./constants";
 
@@ -27,14 +27,27 @@ const HeaderActionButton = ({
   likeCount,
   shareCount
 }: HeaderActionButtonProps) => {
-  
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    
+    // Only trigger animation for heart icon (you might need to adjust this condition)
+    if (Icon.name === "Heart" || Icon.displayName === "Heart") {
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 700); // Match animation duration
+    }
+  };
+
   // Determine which count to show
   const count = likeCount ?? shareCount;
-  
+
   // Improved transition thresholds for smoother animation
   const expandedThreshold = 0.2;
   const fadingThreshold = 0.4;
-  
+
   // Show horizontal layout with count in non-scroll state
   if (count !== undefined && progress < expandedThreshold) {
     return (
@@ -46,13 +59,13 @@ const HeaderActionButton = ({
         }}
       >
         <button
-          onClick={onClick}
-          className="flex items-center gap-1.5 transition-all duration-500 ease-out"
+          onClick={handleClick}
+          className="flex items-center gap-1.5 transition-all duration-500 ease-out relative"
         >
           <Icon
             size={HEADER_ICON_SIZE}
             strokeWidth={HEADER_ICON_STROKE_WIDTH}
-            className="transition-all duration-500 ease-out"
+            className={`transition-all duration-500 ease-out ${isAnimating ? 'heart-animation' : ''}`}
             style={{
               fill: active && fillWhenActive ? activeColor : 'transparent',
               color: active ? activeColor : `rgba(255, 255, 255, ${0.95 - (progress * 0.2)})`
@@ -71,11 +84,11 @@ const HeaderActionButton = ({
       </div>
     );
   }
-  
+
   // Transitional state - fading count while shrinking
   if (count !== undefined && progress < fadingThreshold) {
     const transitionProgress = (progress - expandedThreshold) / (fadingThreshold - expandedThreshold);
-    
+
     return (
       <div 
         className="flex items-center rounded-full transition-all duration-500 ease-out"
@@ -89,8 +102,8 @@ const HeaderActionButton = ({
         }}
       >
         <button
-          onClick={onClick}
-          className="flex items-center transition-all duration-500 ease-out"
+          onClick={handleClick}
+          className="flex items-center transition-all duration-500 ease-out relative"
           style={{
             gap: `${6 - (transitionProgress * 6)}px`,
           }}
@@ -98,7 +111,7 @@ const HeaderActionButton = ({
           <Icon
             size={HEADER_ICON_SIZE}
             strokeWidth={HEADER_ICON_STROKE_WIDTH}
-            className="transition-all duration-500 ease-out"
+            className={`transition-all duration-500 ease-out ${isAnimating ? 'heart-animation' : ''}`}
             style={{
               fill: active && fillWhenActive ? activeColor : 'transparent',
               color: active ? activeColor : progress > 0.5 
@@ -134,8 +147,8 @@ const HeaderActionButton = ({
       }}
     >
       <button
-        onClick={onClick}
-        className="h-8 w-8 rounded-full flex items-center justify-center p-1 transition-all duration-500 ease-out"
+        onClick={handleClick}
+        className="h-8 w-8 rounded-full flex items-center justify-center p-1 transition-all duration-500 ease-out relative"
         style={{
           transform: `scale(${0.9 + (progress * 0.1)})`,
         }}
@@ -143,7 +156,7 @@ const HeaderActionButton = ({
         <Icon
           size={HEADER_ICON_SIZE}
           strokeWidth={HEADER_ICON_STROKE_WIDTH}
-          className="transition-all duration-500 ease-out"
+          className={`transition-all duration-500 ease-out ${isAnimating ? 'heart-animation' : ''}`}
           style={{
             fill: active && fillWhenActive ? activeColor : 'transparent',
             color: active ? activeColor : progress > 0.5 
