@@ -7,8 +7,8 @@ import { useAuthOverlay } from '@/context/AuthOverlayContext';
 import { useProductDetailState } from './useProductDetailState';
 
 // Import sub-components
-import ProductHeaderSection from './sections/ProductHeaderSection';
-import ProductGallerySection from './sections/ProductGallerySection';
+import ProductHeaderSection from './ProductHeaderSection';
+import ProductGallerySection from './ProductGallerySection';
 import StickyTabsNavigation from './StickyTabsNavigation';
 import ProductContentSections from './ProductContentSections';
 import ProductRelatedSection from './ProductRelatedSection';
