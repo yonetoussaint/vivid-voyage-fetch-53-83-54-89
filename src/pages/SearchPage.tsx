@@ -20,9 +20,7 @@ const SearchPage = () => {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [headerHeight, setHeaderHeight] = useState(0);
-  const [filtersHeight, setFiltersHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
-  const filtersRef = useRef<HTMLDivElement>(null);
   const [recentSearches, setRecentSearches] = useState([
     'iPhone 15 Pro Max',
     'Wireless headphones',
@@ -35,20 +33,17 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Calculate header heights
+  // Calculate header height
   useEffect(() => {
-    const updateHeights = () => {
+    const updateHeight = () => {
       if (headerRef.current) {
         setHeaderHeight(headerRef.current.offsetHeight);
       }
-      if (filtersRef.current) {
-        setFiltersHeight(filtersRef.current.offsetHeight);
-      }
     };
 
-    updateHeights();
-    window.addEventListener('resize', updateHeights);
-    return () => window.removeEventListener('resize', updateHeights);
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
   useEffect(() => {
@@ -172,9 +167,9 @@ const SearchPage = () => {
         <ProductHeader forceScrolledState={true} actionButtons={searchActionButtons} />
       </div>
       
-
-      {/* Content */}
-      <SpaceSavingCategories 
+      {/* Content with proper top spacing */}
+      <div style={{ paddingTop: `${headerHeight}px` }}>
+        <SpaceSavingCategories
         onCategorySelect={handleCategorySelect}
         showHeader={true}
         headerTitle="Shop by Category"
@@ -209,10 +204,11 @@ const SearchPage = () => {
       
       <BookGenreFlashDeals />
 
-      <VoiceSearchOverlay
-        isActive={isVoiceActive}
-        onClose={() => setIsVoiceActive(false)}
-      />
+        <VoiceSearchOverlay
+          isActive={isVoiceActive}
+          onClose={() => setIsVoiceActive(false)}
+        />
+      </div>
     </div>
   );
 };
