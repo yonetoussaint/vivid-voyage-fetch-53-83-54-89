@@ -1,7 +1,6 @@
 import React from 'react';
 import { X, MessageCircle, Link, Send, Facebook, Mail, MessageSquare } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 interface SocialSharePanelProps {
   open: boolean;
@@ -112,49 +111,56 @@ const SocialSharePanel: React.FC<SocialSharePanelProps> = ({
     },
   ];
 
-  return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-3xl shadow-2xl">
-        <div className="max-w-md mx-auto">
-          {/* Header */}
-          <div className="flex justify-between items-center p-4 pb-2">
-            <h2 className="text-lg font-medium text-gray-900">Share to</h2>
-            <button className="p-1" onClick={() => onOpenChange(false)}>
-              <X className="w-6 h-6 text-gray-500" />
-            </button>
-          </div>
+  if (!open) return null;
 
-          {/* Scrollable container */}
-          <div className="pb-4">
-            <div className="flex space-x-6 overflow-x-auto scrollbar-hide pb-2 px-6">
-              {shareOptions.map((option, index) => (
-                <div key={index} className="flex flex-col items-center flex-shrink-0">
-                  <button 
-                    className="mb-2 hover:scale-105 transition-transform"
-                    onClick={option.onClick}
-                  >
-                    {option.icon}
-                  </button>
-                  <span className="text-sm text-gray-700 text-center whitespace-nowrap">
-                    {option.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+  return (
+    <div className="fixed inset-0 z-50">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/50"
+        onClick={() => onOpenChange(false)}
+      />
+      
+      {/* Panel content */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl max-w-md mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4 pb-2">
+          <h2 className="text-lg font-medium text-gray-900">Share to</h2>
+          <button className="p-1" onClick={() => onOpenChange(false)}>
+            <X className="w-6 h-6 text-gray-500" />
+          </button>
         </div>
 
-        <style jsx>{`
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-      </SheetContent>
-    </Sheet>
+        {/* Scrollable container */}
+        <div className="pb-4">
+          <div className="flex space-x-6 overflow-x-auto scrollbar-hide pb-2 px-6">
+            {shareOptions.map((option, index) => (
+              <div key={index} className="flex flex-col items-center flex-shrink-0">
+                <button 
+                  className="mb-2 hover:scale-105 transition-transform"
+                  onClick={option.onClick}
+                >
+                  {option.icon}
+                </button>
+                <span className="text-sm text-gray-700 text-center whitespace-nowrap">
+                  {option.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+    </div>
   );
 };
 
