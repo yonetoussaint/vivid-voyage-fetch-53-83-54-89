@@ -197,7 +197,7 @@ const SearchPage = () => {
         headerIcon={Clock}
         headerViewAllLink="/recently-viewed"
         headerViewAllText="View All"
-        headerTitleTransform="none"
+        headerTitleTransform="uppercase"
         showClearButton={true}
         clearButtonText="× Clear"
         onClearClick={() => toast({ title: "Cleared", description: "Recently viewed items cleared" })}
