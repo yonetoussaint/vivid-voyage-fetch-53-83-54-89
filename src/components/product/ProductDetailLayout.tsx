@@ -10,11 +10,11 @@ import { useProductDetailState } from './useProductDetailState';
 import ProductHeaderSection from './sections/ProductHeaderSection';
 import ProductGallerySection from './sections/ProductGallerySection';
 import StickyTabsNavigation from './StickyTabsNavigation';
-import ProductContentSections from './sections/ProductContentSections';
-import ProductRelatedSection from './sections/ProductRelatedSection';
+import ProductContentSections from './ProductContentSections';
+import ProductRelatedSection from './ProductRelatedSection';
 import ProductScrollManager from './ProductScrollManager';
 import ProductVariantManager from './ProductVariantManager';
-import ProductStickyComponents from './sections/ProductStickyComponents';
+import ProductStickyComponents from './ProductStickyComponents';
 
 interface ProductDetailLayoutProps {
   product: any;
