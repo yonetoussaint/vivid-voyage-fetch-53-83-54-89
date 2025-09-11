@@ -76,12 +76,10 @@ const RecentlyViewed: React.FC<RecentlyViewedProps> = ({
         />
       )}
       
-      <div className="flex overflow-x-auto px-2 -mx-2 scrollbar-hide">
-          {/* Left padding spacer */}
-          <div className="flex-shrink-0 w-2"></div>
-
+      <div className="py-3 bg-white">
+        <div className="flex overflow-x-auto pl-2 scrollbar-hide">
           {products.map((product, index) => (
-            <div key={index} className="flex-shrink-0 w-20 pb-1 mx-1">
+            <div key={index} className="flex-shrink-0 w-20 pb-1 mr-[3vw]">
               <div className="relative">
                 <div className={`${product.color} h-20 w-20 rounded flex items-center justify-center`}>
                 </div>
@@ -93,8 +91,9 @@ const RecentlyViewed: React.FC<RecentlyViewedProps> = ({
             </div>
           ))}
 
-        {/* Right padding spacer */}
-        <div className="flex-shrink-0 w-2"></div>
+          {/* Add right spacing for proper scrolling to the end */}
+          <div className="flex-shrink-0 w-2"></div>
+        </div>
       </div>
     </div>
   );
