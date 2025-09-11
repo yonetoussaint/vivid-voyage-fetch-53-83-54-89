@@ -7,13 +7,14 @@ import { useAuthOverlay } from '@/context/AuthOverlayContext';
 import { useProductDetailState } from './useProductDetailState';
 
 // Import sub-components
-import ProductHeaderSection from './ProductHeaderSection';
-import ProductGallerySection from './ProductGallerySection';
-import ProductContentSections from './ProductContentSections';
-import ProductRelatedSection from './ProductRelatedSection';
+import ProductHeaderSection from './sections/ProductHeaderSection';
+import ProductGallerySection from './sections/ProductGallerySection';
+import StickyTabsNavigation from './StickyTabsNavigation';
+import ProductContentSections from './sections/ProductContentSections';
+import ProductRelatedSection from './sections/ProductRelatedSection';
 import ProductScrollManager from './ProductScrollManager';
 import ProductVariantManager from './ProductVariantManager';
-import ProductStickyComponents from './ProductStickyComponents';
+import ProductStickyComponents from './sections/ProductStickyComponents';
 
 interface ProductDetailLayoutProps {
   product: any;
@@ -79,6 +80,12 @@ const ProductDetailLayout: React.FC<ProductDetailLayoutProps> = ({ product, prod
         }}
         onVariantImageChange={handlers.handleVariantImageSelection}
         onSellerClick={() => navigate(`/seller/${product?.sellers?.id}`)}
+      />
+
+      {/* Sticky Tabs Navigation - Moved back to main layout */}
+      <StickyTabsNavigation
+        headerHeight={state.headerHeight}
+        galleryRef={refs.galleryRef}
       />
 
       {/* Main Content Sections */}
