@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ProductImageGallery from "@/components/ProductImageGallery";
-import StickyTabsNavigation from './StickyTabsNavigation';
 
 interface ProductGallerySectionProps {
   ref: React.RefObject<HTMLDivElement>;
@@ -42,10 +41,6 @@ const ProductGallerySection: React.FC<ProductGallerySectionProps> = React.forwar
         onProductDetailsClick={onProductDetailsClick}
         onImageIndexChange={onImageIndexChange}
         onVariantImageChange={onVariantImageChange}
-      />
-      
-      <StickyTabsNavigation
-        galleryRef={galleryRef}
       />
     </div>
   );
