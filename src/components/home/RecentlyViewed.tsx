@@ -24,7 +24,7 @@ const RecentlyViewed: React.FC<RecentlyViewedProps> = ({
   headerIcon = Clock,
   headerViewAllLink,
   headerViewAllText = "View All",
-  headerTitleTransform = "none",
+  headerTitleTransform = "uppercase",
   showClearButton = true,
   clearButtonText = "× Clear"
 }) => {
