@@ -381,8 +381,14 @@ const ProductImageGallery = forwardRef<ProductImageGalleryRef, ProductImageGalle
 
 
  {/* Use the separate ProductNameDisplay component */}
-      <ProductNameDisplay product={product} />
-
+      // In your ProductImageGallery component, update the ProductNameDisplay usage:
+<ProductNameDisplay 
+  product={product}
+  selectedColor={configurationData?.selectedColor}
+  selectedStorage={configurationData?.selectedStorage}
+  selectedNetwork={configurationData?.selectedNetwork}
+  selectedCondition={configurationData?.selectedCondition}
+/>
 
       {totalItems > 1 && (
         <div ref={tabsContainerRef} className="w-full bg-white">
