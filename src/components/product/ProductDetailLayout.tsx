@@ -51,7 +51,7 @@ const ProductDetailLayout: React.FC<ProductDetailLayoutProps> = ({ product, prod
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white overscroll-none" ref={refs.contentRef}>
+    <div className="flex flex-col min-h-0 bg-white overscroll-none" ref={refs.contentRef}>
       {/* Header Section */}
       <ProductHeaderSection
         ref={refs.headerRef}
