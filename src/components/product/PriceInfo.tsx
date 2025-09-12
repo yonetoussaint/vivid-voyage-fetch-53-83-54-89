@@ -49,10 +49,8 @@ interface PriceInfoProps {
   product?: {
     id: string;
     name: string;
-    price: number;
-    discount_price?: number | null;
+    variants?: any[];
   };
-  bundlePrice?: number;
   focusMode?: boolean;
   isPlaying?: boolean;
   configurationData?: {
@@ -64,13 +62,11 @@ interface PriceInfoProps {
     getSelectedStorageVariant: () => any;
     getSelectedNetworkVariant: () => any;
     getSelectedConditionVariant: () => any;
-    formatPrice: (price: number) => string;
   } | null;
 }
 
 const PriceInfo: React.FC<PriceInfoProps> = ({ 
   product, 
-  bundlePrice, 
   focusMode,
   isPlaying,
   configurationData 
@@ -79,34 +75,41 @@ const PriceInfo: React.FC<PriceInfoProps> = ({
 
   if (!product) return null;
 
-  // Memoize the price calculation to prevent unnecessary re-renders
-  const currentPrice = React.useMemo(() => {
+  // Always get the price from the selected variant
+  const getCurrentVariantPrice = () => {
     if (configurationData) {
-      // Get the actual selected variant price from the deepest level
+      // Try to get price from the deepest level variant (condition > network > storage > color)
       const selectedConditionVariant = configurationData.getSelectedConditionVariant();
-      if (selectedConditionVariant) {
+      if (selectedConditionVariant && selectedConditionVariant.price !== undefined) {
         return selectedConditionVariant.price;
       }
 
       const selectedNetworkVariant = configurationData.getSelectedNetworkVariant();
-      if (selectedNetworkVariant) {
+      if (selectedNetworkVariant && selectedNetworkVariant.price !== undefined) {
         return selectedNetworkVariant.price;
       }
 
       const selectedStorageVariant = configurationData.getSelectedStorageVariant();
-      if (selectedStorageVariant) {
+      if (selectedStorageVariant && selectedStorageVariant.price !== undefined) {
         return selectedStorageVariant.price;
       }
 
       const selectedColorVariant = configurationData.getSelectedColorVariant();
-      if (selectedColorVariant) {
+      if (selectedColorVariant && selectedColorVariant.price !== undefined) {
         return selectedColorVariant.price;
       }
     }
 
-    // Fallback to product price
-    return product.discount_price || product.price;
-  }, [product, configurationData]);
+    // If no variants are selected but product has variants, use the first variant's price
+    if (product.variants && product.variants.length > 0) {
+      return product.variants[0].price;
+    }
+
+    // If no variants exist at all, return 0 (no product base price fallback)
+    return 0;
+  };
+
+  const currentPrice = getCurrentVariantPrice();
 
   return (
     <div className={`absolute bottom-12 left-3 z-30 transition-opacity duration-300 ${(focusMode || isPlaying) ? 'opacity-0' : ''}`}>
