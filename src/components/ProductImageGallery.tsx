@@ -381,7 +381,7 @@ const ProductImageGallery = forwardRef<ProductImageGalleryRef, ProductImageGalle
 
 
  {/* Use the separate ProductNameDisplay component */}
-      // In your ProductImageGallery component, update the ProductNameDisplay usage:
+      
 <ProductNameDisplay 
   product={product}
   selectedColor={configurationData?.selectedColor}
