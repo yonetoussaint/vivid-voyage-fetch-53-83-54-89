@@ -15,7 +15,7 @@ const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined
 const currencies = {
   HTG: 'HTG',
   HTD: 'HTD', 
-  USD: '$'
+  USD: 'USD'
 };
 
 const currencyToCountry = {
