@@ -384,10 +384,10 @@ const ProductImageGallery = forwardRef<ProductImageGalleryRef, ProductImageGalle
       
 <ProductNameDisplay 
   product={product}
-  selectedColor={selectedColor}  // Pass the individual props
-  selectedStorage={selectedStorage}
-  selectedNetwork={selectedNetwork}
-  selectedCondition={selectedCondition}
+  selectedColor={configurationData?.selectedColor}
+  selectedStorage={configurationData?.selectedStorage}
+  selectedNetwork={configurationData?.selectedNetwork}
+  selectedCondition={configurationData?.selectedCondition}
 />
       {totalItems > 1 && (
         <div ref={tabsContainerRef} className="w-full bg-white">
