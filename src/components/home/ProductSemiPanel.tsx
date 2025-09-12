@@ -34,10 +34,13 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
           </svg>
         </button>
 
-        {/* Scrollable Content */}
+        {/* Scrollable Content with header space */}
         {productId ? (
-          <div className="flex-1 overflow-y-auto min-h-0">
-            <ProductDetail productId={productId} />
+          <div className="flex-1 overflow-y-auto min-h-0 relative">
+            {/* This container accounts for the fixed header */}
+            <div className="absolute inset-0 overflow-y-auto">
+              <ProductDetail productId={productId} />
+            </div>
           </div>
         ) : (
           <div className="flex items-center justify-center h-full">
