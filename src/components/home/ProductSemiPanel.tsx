@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import ProductDetail from '@/pages/ProductDetail';
 import ProductHeader from '@/components/product/ProductHeader';
 import { Heart, Share } from 'lucide-react';
@@ -14,7 +14,29 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
   isOpen,
   onClose,
 }) => {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState("overview");
+  const [focusMode, setFocusMode] = useState(false);
+  const [showHeaderInFocus, setShowHeaderInFocus] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [totalImages, setTotalImages] = useState(0);
+
   if (!isOpen) return null;
+
+  const handleTabChange = (section: string) => {
+    setActiveSection(section);
+    console.log('Tab changed to:', section);
+    // You might want to implement scroll-to-section logic here
+  };
+
+  const handleShareClick = () => {
+    console.log('Share clicked in panel');
+  };
+
+  const handleProductDetailsClick = () => {
+    console.log('Product details clicked');
+    onClose(); // Or any other action
+  };
 
   return (
     <>
@@ -39,18 +61,18 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
           </button>
         </div>
 
-        {/* Product Header - Used the same way as in ProductHeaderSection */}
-        <div className="relative z-50">
+        {/* Product Header - with ref and scroll parameters */}
+        <div ref={headerRef} className="relative z-50">
           <ProductHeader 
             inPanel={true}
-            activeSection="overview"
-            onTabChange={(section) => console.log('Tab changed:', section)}
-            focusMode={false}
-            showHeaderInFocus={false}
-            onProductDetailsClick={onClose}
-            currentImageIndex={0}
-            totalImages={0}
-            onShareClick={() => console.log('Share clicked')}
+            activeSection={activeSection}
+            onTabChange={handleTabChange}
+            focusMode={focusMode}
+            showHeaderInFocus={showHeaderInFocus}
+            onProductDetailsClick={handleProductDetailsClick}
+            currentImageIndex={currentImageIndex}
+            totalImages={totalImages}
+            onShareClick={handleShareClick}
             actionButtons={[
               {
                 Icon: Heart,
@@ -60,7 +82,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
               },
               {
                 Icon: Share,
-                onClick: () => console.log('Share clicked in panel'),
+                onClick: handleShareClick,
                 count: 23
               }
             ]}
@@ -72,7 +94,16 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
           <div className="flex-1 overflow-y-auto min-h-0 relative">
             {/* This container accounts for the fixed header */}
             <div className="absolute inset-0 overflow-y-auto pt-16">
-              <ProductDetail productId={productId} />
+              {/* Pass scroll-related callbacks to ProductDetail if needed */}
+              <ProductDetail 
+                productId={productId}
+                onImageIndexChange={(currentIndex, totalItems) => {
+                  setCurrentImageIndex(currentIndex);
+                  setTotalImages(totalItems);
+                }}
+                onFocusModeChange={setFocusMode}
+                onShowHeaderInFocusChange={setShowHeaderInFocus}
+              />
             </div>
           </div>
         ) : (
