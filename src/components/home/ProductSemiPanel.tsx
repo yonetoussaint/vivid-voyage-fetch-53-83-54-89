@@ -16,8 +16,8 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   useEffect(() => {
     if (isOpen && productId) {
-      // Add a modal parameter to the URL so the page knows it's being displayed in a panel
-      setIframeUrl(`/product/${productId}?modal=true&panel=true`);
+      // Add panel parameter to the URL
+      setIframeUrl(`/product/${productId}?panel=true`);
       setIsLoading(true);
     } else {
       setIframeUrl(null);
@@ -32,16 +32,21 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop with fade-in animation */}
       <div 
-        className="fixed inset-0 bg-black/50 z-40"
+        className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
         onClick={onClose}
       />
 
-      {/* Semi Panel */}
-      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-50 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
+      {/* Semi Panel with slide-up animation */}
+      <div className="fixed bottom-0 left-0 right-0 h-[85vh] bg-white z-50 rounded-t-2xl shadow-2xl overflow-hidden flex flex-col transform transition-transform duration-300">
+        {/* Drag handle */}
+        <div className="flex justify-center py-2 cursor-grab active:cursor-grabbing">
+          <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
+        </div>
+        
         {/* Header with close button */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
           <h2 className="text-lg font-semibold text-gray-800">
             Product Details
           </h2>
@@ -58,7 +63,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
         {/* Loading indicator */}
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 z-10">
             <div className="flex flex-col items-center">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-2"></div>
               <p className="text-gray-600">Loading product details...</p>
@@ -76,11 +81,15 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
               sandbox="allow-same-origin allow-forms allow-scripts allow-popups allow-top-navigation-by-user-activation"
               allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment"
               referrerPolicy="strict-origin-when-cross-origin"
+              title="Product Details"
             />
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center text-gray-500">
-                No product selected
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-16M9 9h6m-6 3h6m-6 3h6" />
+                </svg>
+                <p>No product selected</p>
               </div>
             </div>
           )}
