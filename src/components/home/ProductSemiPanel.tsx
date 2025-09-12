@@ -1,6 +1,7 @@
 import React from 'react';
 import ProductDetail from '@/pages/ProductDetail';
 import ProductHeader from '@/components/product/ProductHeader'; // Adjust the import path as needed
+import {Heart, Share} from 'lucid-react';
 
 interface ProductSemiPanelProps {
   productId: string | null;
