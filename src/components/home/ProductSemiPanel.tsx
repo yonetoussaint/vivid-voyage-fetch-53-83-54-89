@@ -1,9 +1,6 @@
 import React from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useProduct } from '@/hooks/useProduct';
-import ProductDetailLayout from '@/components/product/ProductDetailLayout';
-import ProductDetailLoading from '@/components/product/ProductDetailLoading';
-import ProductDetailError from '@/components/product/ProductDetailError';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import ProductDetail from '@/pages/ProductDetail'; // or wherever it's located
 
 interface ProductSemiPanelProps {
   productId: string | null;
@@ -16,13 +13,6 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
   isOpen,
   onClose,
 }) => {
-  // Only fetch data and render when the panel is open and we have a product ID
-  if (!isOpen || !productId) {
-    return null;
-  }
-
-  const { data: product, isLoading, error } = useProduct(productId);
-
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       onClose();
@@ -35,28 +25,15 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         side="bottom" 
         className="h-[90vh] p-0 overflow-hidden"
       >
-        <SheetHeader className="px-6 py-4 border-b">
-          <SheetTitle className="text-left">
-            {product?.name || 'Product Details'}
-          </SheetTitle>
-        </SheetHeader>
-        
-        <div className="flex-1 overflow-y-auto">
-          {isLoading ? (
-            <div className="p-6">
-              <ProductDetailLoading />
+        {productId ? (
+          <ProductDetail productId={productId} />
+        ) : (
+          <div className="p-6">
+            <div className="text-center text-gray-500">
+              No product selected
             </div>
-          ) : error || !product ? (
-            <div className="p-6">
-              <ProductDetailError />
-            </div>
-          ) : (
-            <ProductDetailLayout 
-              product={product} 
-              productId={productId || ''} 
-            />
-          )}
-        </div>
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );
