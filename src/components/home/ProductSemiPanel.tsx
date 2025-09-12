@@ -23,25 +23,29 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent 
         side="bottom" 
-        className="h-[90vh] p-0 overflow-hidden flex flex-col"
+        className="h-[90vh] p-0 flex flex-col"
+        // Remove overflow-hidden from here to let content determine scroll
       >
         {productId ? (
           <>
-            {/* Optional: Add a header with title */}
-            <SheetHeader className="px-6 py-4 border-b shrink-0">
+            <SheetHeader className="px-6 py-4 border-b flex-shrink-0 bg-white z-10">
               <SheetTitle className="text-left">
                 Product Details
               </SheetTitle>
             </SheetHeader>
             
-            {/* Constrained container for ProductDetail */}
-            <div className="flex-1 overflow-hidden">
-              <div className="h-full overflow-y-auto">
-                {/* Wrapper to override any global styles that might cause overflow */}
-                <div className="max-w-none w-full min-h-0">
-                  <ProductDetail productId={productId} />
-                </div>
-              </div>
+            {/* Simple scrollable approach */}
+            <div 
+              className="flex-1 p-0"
+              style={{
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                // Ensure it takes remaining height
+                height: 'calc(90vh - 73px)', // 73px is approximate header height
+                maxHeight: 'calc(90vh - 73px)'
+              }}
+            >
+              <ProductDetail productId={productId} />
             </div>
           </>
         ) : (
@@ -55,3 +59,5 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     </Sheet>
   );
 };
+
+export default ProductSemiPanel;
