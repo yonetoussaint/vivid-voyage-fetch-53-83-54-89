@@ -13,11 +13,12 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 }) => {
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (isOpen && productId) {
-      // Add panel parameter to the URL
-      setIframeUrl(`/product/${productId}?panel=true`);
+      // Add panel parameter to the URL so the page knows it's being displayed in a panel
+      setIframeUrl(`/product/${productId}?panel=true&embedded=true`);
       setIsLoading(true);
     } else {
       setIframeUrl(null);
@@ -26,7 +27,32 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   const handleIframeLoad = () => {
     setIsLoading(false);
+    
+    // Once iframe is loaded, send a message to adjust the layout
+    setTimeout(() => {
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+        iframeRef.current.contentWindow.postMessage({
+          type: 'EMBEDDED_LAYOUT',
+          isEmbedded: true
+        }, '*');
+      }
+    }, 100);
   };
+
+  // Listen for messages from the iframe
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === 'IFRAME_HEIGHT') {
+        // Adjust iframe height based on content
+        if (iframeRef.current) {
+          iframeRef.current.style.height = `${event.data.height}px`;
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   if (!isOpen) return null;
 
@@ -72,9 +98,10 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         )}
 
         {/* Iframe container */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative overflow-y-auto">
           {iframeUrl ? (
             <iframe 
+              ref={iframeRef}
               src={iframeUrl}
               className="w-full h-full border-none"
               onLoad={handleIframeLoad}
