@@ -7,7 +7,7 @@ interface CurrencySwitcherProps {
   price?: number;
   className?: string;
   buttonClassName?: string;
-  showSwitcher?: boolean; // Add this new prop
+  showToggle?: boolean; // Changed from showSwitcher to showToggle
 }
 
 export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({ 
@@ -15,7 +15,7 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
   price = 0,
   className = "",
   buttonClassName = "",
-  showSwitcher = true // Default to showing switcher
+  showToggle = true // Default to showing toggle elements
 }) => {
   const { currentCurrency, toggleCurrency, formatPrice } = useCurrency();
 
@@ -25,25 +25,25 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
 
       <div className={className}>
         <button
-          onClick={showSwitcher ? toggleCurrency : undefined}
-          className={`bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 ${showSwitcher ? 'hover:bg-black/70 cursor-pointer' : 'cursor-default'} transition-colors ${buttonClassName}`}
-          aria-label={showSwitcher ? "Change currency" : "Current price"}
-          disabled={!showSwitcher}
+          onClick={showToggle ? toggleCurrency : undefined}
+          className={`bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 ${showToggle ? 'hover:bg-black/70 cursor-pointer' : 'cursor-default'} transition-colors ${buttonClassName}`}
+          aria-label={showToggle ? "Change currency" : "Current price"}
+          disabled={!showToggle}
         >
-          <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
-            <span className={`fi fi-${currencyToCountry[currentCurrency]} scale-150`}></span>
-          </div>
-          {showSwitcher && <ChevronDown className="w-3 h-3 stroke-2" />}
+          {showToggle && (
+            <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
+              <span className={`fi fi-${currencyToCountry[currentCurrency]} scale-150`}></span>
+            </div>
+          )}
+          {showToggle && <ChevronDown className="w-3 h-3 stroke-2" />}
           {showPrice && (
             <span className="text-white font-bold">
               {formatPrice(price)}
             </span>
           )}
-          {showSwitcher && (
-            <span className="font-bold">
-              {currencies[currentCurrency]}
-            </span>
-          )}
+          <span className="font-bold">
+            {currencies[currentCurrency]}
+          </span>
         </button>
       </div>
     </>
@@ -119,10 +119,10 @@ const PriceInfo: React.FC<PriceInfoProps> = ({
   return (
     <div className={`absolute bottom-12 left-3 z-30 transition-opacity duration-300 ${(focusMode || isPlaying) ? 'opacity-0' : ''}`}>
       <CurrencySwitcher 
-  showPrice={true}
-  price={currentPrice}
-  showSwitcher={false}
-/>
+        showPrice={true}
+        price={currentPrice}
+        showToggle={false} // This will hide flag and chevron but keep currency code
+      />
     </div>
   );
 };
