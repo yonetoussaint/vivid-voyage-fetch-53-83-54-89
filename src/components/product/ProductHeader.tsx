@@ -96,7 +96,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
           
           {/* CurrencySwitcher - only visible in non-scrolled state */}
           {displayProgress < 0.5 && (
-            <CurrencySwitcher />
+             <CurrencySwitcher showPrice={false} />
           )}
         </div>
 
