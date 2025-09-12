@@ -21,7 +21,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         className="fixed inset-0 bg-black/50 z-40"
         onClick={onClose}
       />
-      
+
       {/* Semi Panel */}
       <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-50 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
         {/* Close button */}
@@ -33,7 +33,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        
+
         {/* Scrollable Content */}
         {productId ? (
           <div className="flex-1 overflow-y-auto min-h-0">
