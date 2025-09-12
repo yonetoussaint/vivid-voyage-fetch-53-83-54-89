@@ -27,6 +27,7 @@ const ProductHeaderSection: React.FC<ProductHeaderSectionProps> = ({
   return (
     <div ref={ref} className="relative z-50">
       <ProductHeader 
+        inPanel={true} // Add this prop
         activeSection={activeSection}
         onTabChange={onTabChange}
         focusMode={focusMode}
