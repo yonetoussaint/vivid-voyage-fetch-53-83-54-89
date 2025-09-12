@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchFlashDeals, trackProductView } from "@/integrations/supabase/products";
 import SectionHeader from "./SectionHeader";
 import TabsNavigation from "./TabsNavigation";
-import ProductSemiPanel from "./ProductSemiPanel"; // Import the ProductSemiPanel
+import ProductSemiPanel from "./ProductSemiPanel";
 
 interface FlashDealsProps {
   productType?: string;
@@ -107,7 +107,8 @@ export default function FlashDeals({ productType }: FlashDealsProps) {
   // Handle closing the semi panel
   const handleCloseSemiPanel = () => {
     setIsPanelOpen(false);
-    setSelectedProductId(null);
+    // Don't reset productId immediately to allow smooth animation
+    setTimeout(() => setSelectedProductId(null), 300);
   };
 
   const middleElement = (
@@ -186,13 +187,13 @@ export default function FlashDeals({ productType }: FlashDealsProps) {
                   >
                     <div 
                       onClick={() => handleProductClick(product.id)}
-                      className="cursor-pointer"
+                      className="cursor-pointer group"
                     >
-                      <div className={`relative ${productType === 'books' ? 'aspect-[1.6:1]' : 'aspect-square'} overflow-hidden bg-gray-50 rounded-md mb-1.5`}>
+                      <div className={`relative ${productType === 'books' ? 'aspect-[1.6:1]' : 'aspect-square'} overflow-hidden bg-gray-50 rounded-md mb-1.5 group-hover:shadow-md transition-all duration-300`}>
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
                         {productType !== 'books' && (
@@ -210,8 +211,16 @@ export default function FlashDeals({ productType }: FlashDealsProps) {
                             ))}
                           </div>
                         )}
+                        {product.discountPercentage > 0 && (
+                          <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-bl-md">
+                            -{product.discountPercentage}%
+                          </div>
+                        )}
                       </div>
-                      <div>
+                      <div className="p-1">
+                        <h3 className="text-xs font-medium line-clamp-2 mb-1 group-hover:text-blue-600 transition-colors">
+                          {product.name}
+                        </h3>
                         <div className="flex items-baseline gap-1">
                           <div className="text-[#FF4747] font-semibold text-sm">
                             ${Number(product.discount_price || product.price).toFixed(2)}
