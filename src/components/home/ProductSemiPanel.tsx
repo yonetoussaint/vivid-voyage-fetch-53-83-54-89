@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductDetail from '@/pages/ProductDetail';
-import ProductHeader from '@/components/product/ProductHeader'; // Adjust the import path as needed
-import {Heart, Share} from 'lucide-react';
+import ProductHeader from '@/components/product/ProductHeader';
+import { Heart, Share } from 'lucide-react';
 
 interface ProductSemiPanelProps {
   productId: string | null;
@@ -39,24 +39,33 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
           </button>
         </div>
 
-        {/* Product Header */}
-        <ProductHeader 
-          inPanel={true}
-          onProductDetailsClick={onClose}
-          actionButtons={[
-            {
-              Icon: Heart,
-              active: false,
-              onClick: () => console.log('Favorite clicked in panel'),
-              count: 147
-            },
-            {
-              Icon: Share,
-              onClick: () => console.log('Share clicked in panel'),
-              count: 23
-            }
-          ]}
-        />
+        {/* Product Header - Used the same way as in ProductHeaderSection */}
+        <div className="relative z-50">
+          <ProductHeader 
+            inPanel={true}
+            activeSection="overview"
+            onTabChange={(section) => console.log('Tab changed:', section)}
+            focusMode={false}
+            showHeaderInFocus={false}
+            onProductDetailsClick={onClose}
+            currentImageIndex={0}
+            totalImages={0}
+            onShareClick={() => console.log('Share clicked')}
+            actionButtons={[
+              {
+                Icon: Heart,
+                active: false,
+                onClick: () => console.log('Favorite clicked in panel'),
+                count: 147
+              },
+              {
+                Icon: Share,
+                onClick: () => console.log('Share clicked in panel'),
+                count: 23
+              }
+            ]}
+          />
+        </div>
 
         {/* Scrollable Content with header space */}
         {productId ? (
