@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface ProductSemiPanelProps {
   productId: string | null;
@@ -13,7 +13,8 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 }) => {
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && productId) {
@@ -27,13 +28,19 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   const handleIframeLoad = () => {
     setIsLoading(false);
-    
+
     // Once iframe is loaded, send a message to adjust the layout
     setTimeout(() => {
       if (iframeRef.current && iframeRef.current.contentWindow) {
         iframeRef.current.contentWindow.postMessage({
           type: 'EMBEDDED_LAYOUT',
-          isEmbedded: true
+          isEmbedded: true,
+          panelHeaderHeight: 64 // Send the approximate height of the panel header
+        }, '*');
+        
+        // Scroll the iframe content down to account for the panel header
+        iframeRef.current.contentWindow.postMessage({
+          type: 'SCROLL_TO_TOP'
         }, '*');
       }
     }, 100);
@@ -46,6 +53,13 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         // Adjust iframe height based on content
         if (iframeRef.current) {
           iframeRef.current.style.height = `${event.data.height}px`;
+        }
+      }
+      
+      // Handle scroll position adjustment request from iframe
+      if (event.data.type === 'ADJUST_SCROLL_POSITION') {
+        if (iframeRef.current && iframeRef.current.contentWindow) {
+          iframeRef.current.contentWindow.scrollTo(0, event.data.scrollY);
         }
       }
     };
@@ -65,12 +79,15 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
       />
 
       {/* Semi Panel with slide-up animation */}
-      <div className="fixed bottom-0 left-0 right-0 h-[85vh] bg-white z-50 rounded-t-2xl shadow-2xl overflow-hidden flex flex-col transform transition-transform duration-300">
+      <div 
+        ref={panelRef}
+        className="fixed bottom-0 left-0 right-0 h-[85vh] bg-white z-50 rounded-t-2xl shadow-2xl overflow-hidden flex flex-col transform transition-transform duration-300"
+      >
         {/* Drag handle */}
         <div className="flex justify-center py-2 cursor-grab active:cursor-grabbing">
           <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
         </div>
-        
+
         {/* Header with close button */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
           <h2 className="text-lg font-semibold text-gray-800">
@@ -109,6 +126,8 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
               allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment"
               referrerPolicy="strict-origin-when-cross-origin"
               title="Product Details"
+              // Add margin to the top of the iframe to prevent content from being hidden
+              style={{ marginTop: '0px' }}
             />
           ) : (
             <div className="flex items-center justify-center h-full">
