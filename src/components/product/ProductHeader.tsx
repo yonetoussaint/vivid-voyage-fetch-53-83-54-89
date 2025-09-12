@@ -32,6 +32,7 @@ interface ProductHeaderProps {
   onShareClick?: () => void;
   forceScrolledState?: boolean;
   actionButtons?: ActionButton[];
+  inPanel?: boolean; // New prop
 }
 
 const ProductHeader: React.FC<ProductHeaderProps> = ({ 
@@ -44,7 +45,8 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
   totalImages,
   onShareClick,
   forceScrolledState = false,
-  actionButtons
+  actionButtons,
+  inPanel = false // Default to false
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { progress } = useScrollProgress();
@@ -76,90 +78,90 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
   }
 
   return (
-  <div 
-    className={`fixed top-0 left-0 right-0 z-30 flex flex-col transition-all duration-300 ${
-      focusMode && !showHeaderInFocus ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
-    }`}
-  >
-    {/* Main Header */}
     <div 
-      className="py-2 px-3 w-full transition-all duration-700"
-      style={{
-        backgroundColor: `rgba(255, 255, 255, ${displayProgress * 0.95})`,
-        backdropFilter: `blur(${displayProgress * 8}px)`,
-      }}
+      className={`${inPanel ? 'relative' : 'fixed top-0 left-0 right-0'} z-30 flex flex-col transition-all duration-300 ${
+        focusMode && !showHeaderInFocus ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+      }`}
     >
-      <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
-        {/* Left side - Back button and CurrencySwitcher */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <BackButton progress={displayProgress} />
-          
-          {/* CurrencySwitcher - only visible in non-scrolled state */}
-          {displayProgress < 0.5 && (
-             <CurrencySwitcher showPrice={false} />
-          )}
-        </div>
+      {/* Main Header */}
+      <div 
+        className="py-2 px-3 w-full transition-all duration-700"
+        style={{
+          backgroundColor: `rgba(255, 255, 255, ${displayProgress * 0.95})`,
+          backdropFilter: `blur(${displayProgress * 8}px)`,
+        }}
+      >
+        <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
+          {/* Left side - Back button and CurrencySwitcher */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <BackButton progress={displayProgress} />
 
-        {/* Center - Search bar when scrolled */}
-        <div className="flex-1 mx-4">
-          {displayProgress >= 0.5 && (
-            <div className="flex-1 relative max-w-md mx-auto">
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onClick={() => {
-                  startLoading();
-                  navigate(`/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`);
-                }}
-                className="w-full px-3 py-1 text-sm font-medium border-2 border-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all duration-300 bg-white shadow-sm cursor-pointer"
-                readOnly
-              />
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 font-bold" />
-            </div>
-          )}
-        </div>
+            {/* CurrencySwitcher - only visible in non-scrolled state */}
+            {displayProgress < 0.5 && (
+              <CurrencySwitcher showPrice={false} />
+            )}
+          </div>
 
-        {/* Right side - Action buttons */}
-        <div className="flex gap-2 flex-shrink-0">
-          {actionButtons ? (
-            actionButtons.map((button, index) => (
-              <HeaderActionButton 
-                key={index}
-                Icon={button.Icon} 
-                active={button.active} 
-                onClick={button.onClick} 
-                progress={displayProgress} 
-                activeColor={button.activeColor}
-                likeCount={button.count}
-                shareCount={button.count}
-              />
-            ))
-          ) : (
-            <>
-              <HeaderActionButton 
-                Icon={Heart} 
-                active={isFavorite} 
-                onClick={toggleFavorite} 
-                progress={displayProgress} 
-                activeColor="#f43f5e"
-                likeCount={147}
-              />
+          {/* Center - Search bar when scrolled */}
+          <div className="flex-1 mx-4">
+            {displayProgress >= 0.5 && (
+              <div className="flex-1 relative max-w-md mx-auto">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onClick={() => {
+                    startLoading();
+                    navigate(`/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`);
+                  }}
+                  className="w-full px-3 py-1 text-sm font-medium border-2 border-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all duration-300 bg-white shadow-sm cursor-pointer"
+                  readOnly
+                />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 font-bold" />
+              </div>
+            )}
+          </div>
 
-              <HeaderActionButton 
-                Icon={Share} 
-                progress={displayProgress}
-                shareCount={23}
-                onClick={onShareClick}
-              />
-            </>
-          )}
+          {/* Right side - Action buttons */}
+          <div className="flex gap-2 flex-shrink-0">
+            {actionButtons ? (
+              actionButtons.map((button, index) => (
+                <HeaderActionButton 
+                  key={index}
+                  Icon={button.Icon} 
+                  active={button.active} 
+                  onClick={button.onClick} 
+                  progress={displayProgress} 
+                  activeColor={button.activeColor}
+                  likeCount={button.count}
+                  shareCount={button.count}
+                />
+              ))
+            ) : (
+              <>
+                <HeaderActionButton 
+                  Icon={Heart} 
+                  active={isFavorite} 
+                  onClick={toggleFavorite} 
+                  progress={displayProgress} 
+                  activeColor="#f43f5e"
+                  likeCount={147}
+                />
+
+                <HeaderActionButton 
+                  Icon={Share} 
+                  progress={displayProgress}
+                  shareCount={23}
+                  onClick={onShareClick}
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default ProductHeader;
