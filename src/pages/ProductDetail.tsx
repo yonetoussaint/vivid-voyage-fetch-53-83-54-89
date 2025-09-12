@@ -7,11 +7,17 @@ import ProductDetailError from "@/components/product/ProductDetailError";
 
 const DEFAULT_PRODUCT_ID = "aae97882-a3a1-4db5-b4f5-156705cd10ee";
 
-const ProductDetail = () => {
+interface ProductDetailProps {
+  productId?: string; // Make it optional so it can work with router params too
+}
+
+const ProductDetail: React.FC<ProductDetailProps> = ({ productId: propProductId }) => {
   console.log('🚀 ProductDetail component loaded');
-  
+
   const { id: paramId } = useParams<{ id: string }>();
-  const productId = paramId || DEFAULT_PRODUCT_ID;
+  // Use prop productId if provided, otherwise use router param, otherwise default
+  const productId = propProductId || paramId || DEFAULT_PRODUCT_ID;
+  
   const { data: product, isLoading } = useProduct(productId);
 
   if (isLoading) {
