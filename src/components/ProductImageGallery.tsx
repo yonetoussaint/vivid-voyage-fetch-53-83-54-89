@@ -10,6 +10,7 @@ import PriceInfo from "@/components/product/PriceInfo";
 import TabsNavigation from "@/components/home/TabsNavigation";
 import SellerInfoOverlay from "@/components/product/SellerInfoOverlay";
 import ConfigurationSummary from "@/components/product/ConfigurationSummary";
+import ProductNameDisplay from "@/components/product/ProductNameDisplay"; // Import the separate component
 
 // Import new modular components
 import { ProductImageGalleryRef, ProductImageGalleryProps } from './product/gallery/types';
@@ -377,6 +378,11 @@ const ProductImageGallery = forwardRef<ProductImageGalleryRef, ProductImageGalle
       </div>
 
       <InfoBand />
+
+
+ {/* Use the separate ProductNameDisplay component */}
+      <ProductNameDisplay product={product} />
+
 
       {totalItems > 1 && (
         <div ref={tabsContainerRef} className="w-full bg-white">
