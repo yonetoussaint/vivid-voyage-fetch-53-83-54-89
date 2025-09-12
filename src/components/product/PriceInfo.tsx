@@ -18,26 +18,30 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
   const { currentCurrency, toggleCurrency, formatPrice } = useCurrency();
 
   return (
-    <div className={className}>
-      <button
-        onClick={toggleCurrency}
-        className={`bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 hover:bg-black/70 transition-colors ${buttonClassName}`}
-        aria-label="Change currency"
-      >
-        <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
-          <span className={`fi fi-${currencyToCountry[currentCurrency]} scale-150`}></span>
-        </div>
-        <ChevronDown className="w-3 h-3 stroke-2" />
-        {showPrice && (
-          <span className="text-white font-bold">
-            {formatPrice(price)}
+    <>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+
+      <div className={className}>
+        <button
+          onClick={toggleCurrency}
+          className={`bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 hover:bg-black/70 transition-colors ${buttonClassName}`}
+          aria-label="Change currency"
+        >
+          <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
+            <span className={`fi fi-${currencyToCountry[currentCurrency]} scale-150`}></span>
+          </div>
+          <ChevronDown className="w-3 h-3 stroke-2" />
+          {showPrice && (
+            <span className="text-white font-bold">
+              {formatPrice(price)}
+            </span>
+          )}
+          <span className="font-bold">
+            {currencies[currentCurrency]}
           </span>
-        )}
-        <span className="font-bold">
-          {currencies[currentCurrency]}
-        </span>
-      </button>
-    </div>
+        </button>
+      </div>
+    </>
   );
 };
 
