@@ -3,19 +3,18 @@ import { useNavigate } from "react-router-dom";
 import ProductImageGallery from "@/components/ProductImageGallery";
 
 interface ProductGallerySectionProps {
-  ref: React.RefObject<HTMLDivElement>;
-  galleryRef: React.RefObject<HTMLDivElement>;
+  galleryRef: React.RefObject<any>;
   displayImages: string[];
   product: any;
   focusMode: boolean;
   onFocusModeChange: (focus: boolean) => void;
   onProductDetailsClick: () => void;
   onImageIndexChange: (currentIndex: number, totalItems: number) => void;
-  onVariantImageChange: (imageUrl: string) => void;
+  onVariantImageChange: (imageUrl: string, variantName: string) => void;
   onSellerClick: () => void;
 }
 
-const ProductGallerySection: React.FC<ProductGallerySectionProps> = React.forwardRef(({
+const ProductGallerySection = React.forwardRef<HTMLDivElement, ProductGallerySectionProps>(({
   galleryRef,
   displayImages,
   product,

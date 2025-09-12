@@ -71,7 +71,7 @@ export const useProductDetailState = (product: any) => {
   }, []);
 
   // Handle variant image selection
-  const handleVariantImageSelection = useCallback((imageUrl: string, variantName: string) => {
+  const handleVariantImageSelection = useCallback((imageUrl: string, variantName?: string) => {
     console.log('📷 Variant image selected in ProductDetail:', imageUrl, variantName);
   }, []);
 
