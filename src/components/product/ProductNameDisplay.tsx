@@ -24,12 +24,12 @@ const ProductNameDisplay: React.FC<ProductNameDisplayProps> = ({
   // Build the variant string with bullet separators
   const getVariantString = () => {
     const variants: string[] = [];
-    
+
     if (selectedColor) variants.push(selectedColor);
     if (selectedStorage) variants.push(selectedStorage);
     if (selectedNetwork) variants.push(selectedNetwork);
     if (selectedCondition) variants.push(selectedCondition);
-    
+
     return variants.join(' • ');
   };
 
@@ -40,7 +40,7 @@ const ProductNameDisplay: React.FC<ProductNameDisplayProps> = ({
       <h1 className="text-base font-semibold text-gray-900 line-clamp-2">
         {product.name}
         {variantString && (
-          <span className="text-sm font-normal text-gray-600 ml-2">
+          <span className="text-base font-semibold text-gray-900 ml-2">
             • {variantString}
           </span>
         )}
