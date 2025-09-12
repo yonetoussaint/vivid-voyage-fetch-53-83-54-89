@@ -37,21 +37,22 @@ const ProductImageGallery = forwardRef<ProductImageGalleryRef, ProductImageGalle
     configurationData
   }, ref) => {
   
-  // Create unified gallery items
-  const galleryItems = createGalleryItems(images, videos, model3dUrl);
-  
-  // Debug logging for 3D model
-  console.log('📷 ProductImageGallery: model3dUrl received:', model3dUrl);
-  console.log('📷 ProductImageGallery: galleryItems created:', galleryItems);
-
   // Use the custom hook for state management
   const galleryState = useGalleryState(
-    galleryItems, 
     images, 
+    videos,
+    model3dUrl,
     onImageIndexChange, 
     onVariantImageChange,
     onFocusModeChange
   );
+
+  // Get galleryItems from the state
+  const galleryItems = galleryState.galleryItems;
+  
+  // Debug logging for 3D model
+  console.log('📷 ProductImageGallery: model3dUrl received:', model3dUrl);
+  console.log('📷 ProductImageGallery: galleryItems created:', galleryItems);
 
   // Destructure state and handlers
   const {

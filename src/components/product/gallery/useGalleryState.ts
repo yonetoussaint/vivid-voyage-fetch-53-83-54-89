@@ -1,20 +1,24 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { CarouselApi } from '@/components/ui/carousel';
 import { GalleryItem, TouchPosition } from './types';
+import { createGalleryItems } from './utils';
 import { toast } from '@/hooks/use-toast';
 
 export const useGalleryState = (
-  galleryItems: GalleryItem[],
   images: string[],
+  videos: any[],
+  model3dUrl?: string,
   onImageIndexChange?: (currentIndex: number, totalItems: number) => void,
   onVariantImageChange?: (imageUrl: string, variantName: string) => void,
   onFocusModeChange?: (focusMode: boolean) => void
 ) => {
-  const totalItems = galleryItems.length;
-  const videoIndices = galleryItems.map((item, index) => item.type === 'video' ? index : -1).filter(i => i !== -1);
-
   // Gallery state
   const [displayImages, setDisplayImages] = useState<string[]>(images);
+  
+  // Create gallery items whenever displayImages, videos, or model3dUrl change
+  const galleryItems = createGalleryItems(displayImages, videos, model3dUrl);
+  const totalItems = galleryItems.length;
+  const videoIndices = galleryItems.map((item, index) => item.type === 'video' ? index : -1).filter(i => i !== -1);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [isRotated, setIsRotated] = useState(0);
@@ -231,6 +235,7 @@ export const useGalleryState = (
     isCurrentModel3D,
     totalItems,
     videoIndices,
+    galleryItems, // Add galleryItems to return
     
     // Setters
     setDisplayImages,
