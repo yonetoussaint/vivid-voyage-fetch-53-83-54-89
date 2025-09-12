@@ -30,18 +30,18 @@ const ProductNameDisplay: React.FC<ProductNameDisplayProps> = ({
     if (selectedNetwork) variants.push(selectedNetwork);
     if (selectedCondition) variants.push(selectedCondition);
 
-    return variants.join(' • ');
+    return variants.join(' ');
   };
 
   const variantString = getVariantString();
 
   return (
     <div className={`w-full bg-white px-2 py-1 border-b border-gray-100 ${className}`}>
-      <h1 className="text-base font-semibold text-gray-900 line-clamp-2">
+      <h1 className="text-base font-normal text-gray-900 line-clamp-2">
         {product.name}
         {variantString && (
-          <span className="text-base font-semibold text-gray-900 ml-2">
-            • {variantString}
+          <span className="text-base font-normal text-gray-900 ml-2">
+            {variantString}
           </span>
         )}
       </h1>
