@@ -1,3 +1,36 @@
+/* Styles for embedded mode */
+.embedded-mode {
+  overflow: visible !important;
+}
+
+.embedded-mode .fixed {
+  position: relative !important;
+}
+
+.embedded-mode .sticky {
+  position: relative !important;
+}
+
+.embedded-mode .sticky-top {
+  position: sticky !important;
+  top: 0;
+  z-index: 40;
+}
+
+/* Ensure proper scrolling in embedded mode */
+.embedded-mode .overflow-auto {
+  overflow: visible !important;
+}
+
+/* Adjust spacing for embedded layout */
+.embedded-mode .pt-16 {
+  padding-top: 0.5rem !important;
+}
+
+.embedded-mode .pb-20 {
+  padding-bottom: 1rem !important;
+}
+
 
 @tailwind base;
 @tailwind components;
