@@ -11,7 +11,7 @@ import SearchPageSkeleton from '@/components/search/SearchPageSkeleton';
 import { useProduct } from '@/hooks/useProduct';
 import CategoryTabs from "../home/header/CategoryTabs";
 import { Separator } from "@/components/ui/separator";
-import { CurrencySwitcher } from "./PriceInfo";
+import PriceInfo, { CurrencySwitcher } from "./PriceInfo";
 
 interface ActionButton {
   Icon: any;
