@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import ProductDetail from '@/pages/ProductDetail';
 
 interface ProductSemiPanelProps {
@@ -27,12 +27,6 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
       >
         {productId ? (
           <>
-            <SheetHeader className="px-6 py-4 border-b shrink-0">
-              <SheetTitle className="text-left">
-                Product Details
-              </SheetTitle>
-            </SheetHeader>
-            
             {/* Enhanced scrollable container with debugging */}
             <div className="flex-1 min-h-0 overflow-hidden relative">
               <div 
