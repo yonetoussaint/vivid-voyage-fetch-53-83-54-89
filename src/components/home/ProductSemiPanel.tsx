@@ -1,6 +1,6 @@
 import React from 'react';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
-import ProductDetail from '@/pages/ProductDetail'; // or wherever it's located
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import ProductDetail from '@/pages/ProductDetail';
 
 interface ProductSemiPanelProps {
   productId: string | null;
@@ -23,12 +23,29 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent 
         side="bottom" 
-        className="h-[90vh] p-0 overflow-hidden"
+        className="h-[90vh] p-0 overflow-hidden flex flex-col"
       >
         {productId ? (
-          <ProductDetail productId={productId} />
+          <>
+            {/* Optional: Add a header with title */}
+            <SheetHeader className="px-6 py-4 border-b shrink-0">
+              <SheetTitle className="text-left">
+                Product Details
+              </SheetTitle>
+            </SheetHeader>
+            
+            {/* Constrained container for ProductDetail */}
+            <div className="flex-1 overflow-hidden">
+              <div className="h-full overflow-y-auto">
+                {/* Wrapper to override any global styles that might cause overflow */}
+                <div className="max-w-none w-full min-h-0">
+                  <ProductDetail productId={productId} />
+                </div>
+              </div>
+            </div>
+          </>
         ) : (
-          <div className="p-6">
+          <div className="flex-1 flex items-center justify-center">
             <div className="text-center text-gray-500">
               No product selected
             </div>
@@ -38,5 +55,3 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     </Sheet>
   );
 };
-
-export default ProductSemiPanel;
