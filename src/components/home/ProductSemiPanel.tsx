@@ -23,7 +23,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
       />
       
       {/* Semi Panel */}
-      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-50 rounded-t-lg shadow-xl overflow-hidden">
+      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-50 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
         {/* Close button */}
         <button 
           onClick={onClose}
@@ -36,7 +36,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         
         {/* Scrollable Content */}
         {productId ? (
-          <div className="h-full overflow-y-auto">
+          <div className="flex-1 overflow-y-auto min-h-0">
             <ProductDetail productId={productId} />
           </div>
         ) : (
