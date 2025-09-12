@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Heart, Share, Package, BadgeInfo, Star, HelpCircle, Truck, Lightbulb, Search, ChevronRight, ScanLine } from "lucide-react";
 import { useScrollProgress } from "./header/useScrollProgress";
@@ -12,6 +11,7 @@ import SearchPageSkeleton from '@/components/search/SearchPageSkeleton';
 import { useProduct } from '@/hooks/useProduct';
 import CategoryTabs from "../home/header/CategoryTabs";
 import { Separator } from "@/components/ui/separator";
+import { CurrencySwitcher } from "@/components/product/PriceInfo";
 
 interface ActionButton {
   Icon: any;
@@ -49,10 +49,10 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const { progress } = useScrollProgress();
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Use forced state or actual scroll progress
   const displayProgress = forceScrolledState ? 1 : progress;
-  
+
   const { id: paramId } = useParams<{ id: string }>();
   const { data: product } = useProduct(paramId || '');
   const navigate = useNavigate();
@@ -70,8 +70,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
     { id: "shipping", name: "Shipping", icon: <Truck className="w-4 h-4" />, path: "#shipping" },
     { id: "specifications", name: "Specs", icon: <Lightbulb className="w-4 h-4" />, path: "#specifications" }
   ];
-  
-  
+
   if (isLoading) {
     return <SearchPageSkeleton />;
   }
@@ -91,9 +90,14 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
       }}
     >
       <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
-        {/* Left side - Back button only */}
+        {/* Left side - Back button and CurrencySwitcher */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <BackButton progress={displayProgress} />
+          
+          {/* CurrencySwitcher - only visible in non-scrolled state */}
+          {displayProgress < 0.5 && (
+            <CurrencySwitcher />
+          )}
         </div>
 
         {/* Center - Search bar when scrolled */}
