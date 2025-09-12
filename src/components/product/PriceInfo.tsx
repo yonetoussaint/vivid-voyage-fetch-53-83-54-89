@@ -18,33 +18,29 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
   const { currentCurrency, toggleCurrency, formatPrice } = useCurrency();
 
   return (
-    <>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
-      
-      <div className={className}>
-        <button
-          onClick={toggleCurrency}
-          className={`bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 hover:bg-black/70 transition-colors ${buttonClassName}`}
-        >
-          <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
-            <span className={`fi fi-${currencyToCountry[currentCurrency]} scale-150`}></span>
-          </div>
-          <ChevronDown className="w-3 h-3 stroke-2" />
-          {showPrice && (
-            <span className="text-white font-bold">
-              {formatPrice(price)}
-            </span>
-          )}
-          <span className="font-bold">
-            {currencies[currentCurrency]}
+    <div className={className}>
+      <button
+        onClick={toggleCurrency}
+        className={`bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 hover:bg-black/70 transition-colors ${buttonClassName}`}
+        aria-label="Change currency"
+      >
+        <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
+          <span className={`fi fi-${currencyToCountry[currentCurrency]} scale-150`}></span>
+        </div>
+        <ChevronDown className="w-3 h-3 stroke-2" />
+        {showPrice && (
+          <span className="text-white font-bold">
+            {formatPrice(price)}
           </span>
-        </button>
-      </div>
-    </>
+        )}
+        <span className="font-bold">
+          {currencies[currentCurrency]}
+        </span>
+      </button>
+    </div>
   );
 };
 
-// Keep the original PriceInfo component unchanged
 interface PriceInfoProps {
   product?: {
     id: string;
@@ -75,14 +71,14 @@ const PriceInfo: React.FC<PriceInfoProps> = ({
   isPlaying,
   configurationData 
 }) => {
-  const { currentCurrency, toggleCurrency, formatPrice } = useCurrency();
+  const { formatPrice } = useCurrency();
 
   if (!product) return null;
 
-  // Calculate the current variant price using the same logic as ConfigurationSummary
-  const getCurrentVariantPrice = () => {
+  // Memoize the price calculation to prevent unnecessary re-renders
+  const currentPrice = React.useMemo(() => {
     if (configurationData) {
-      // Get the actual selected variant price from the deepest level (condition > network > storage > color)
+      // Get the actual selected variant price from the deepest level
       const selectedConditionVariant = configurationData.getSelectedConditionVariant();
       if (selectedConditionVariant) {
         return selectedConditionVariant.price;
@@ -106,9 +102,7 @@ const PriceInfo: React.FC<PriceInfoProps> = ({
 
     // Fallback to product price
     return product.discount_price || product.price;
-  };
-
-  const currentPrice = getCurrentVariantPrice();
+  }, [product, configurationData]);
 
   return (
     <div className={`absolute bottom-12 left-3 z-30 transition-opacity duration-300 ${(focusMode || isPlaying) ? 'opacity-0' : ''}`}>
@@ -120,6 +114,4 @@ const PriceInfo: React.FC<PriceInfoProps> = ({
   );
 };
 
-
-export { CurrencySwitcher };
 export default PriceInfo;
