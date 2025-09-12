@@ -14,7 +14,7 @@ const ProductNameDisplay: React.FC<ProductNameDisplayProps> = ({
   if (!product || !product.name) return null;
   
   return (
-    <div className={`w-full bg-white px-4 py-2 border-b border-gray-100 ${className}`}>
+    <div className={`w-full bg-white px-2 py-1 border-b border-gray-100 ${className}`}>
       <h1 className="text-lg font-semibold text-gray-900 line-clamp-2">
         {product.name}
       </h1>
