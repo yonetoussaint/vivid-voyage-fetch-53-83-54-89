@@ -19,9 +19,10 @@ import ProductStickyComponents from './ProductStickyComponents';
 interface ProductDetailLayoutProps {
   product: any;
   productId: string;
+  hideHeader?: boolean; // New prop to conditionally hide header
 }
 
-const ProductDetailLayout: React.FC<ProductDetailLayoutProps> = ({ product, productId }) => {
+const ProductDetailLayout: React.FC<ProductDetailLayoutProps> = ({ product, productId, hideHeader = false }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
@@ -52,18 +53,20 @@ const ProductDetailLayout: React.FC<ProductDetailLayoutProps> = ({ product, prod
 
   return (
     <div className="flex flex-col min-h-0 bg-white overscroll-none" ref={refs.contentRef}>
-      {/* Header Section */}
-      <ProductHeaderSection
-        ref={refs.headerRef}
-        activeSection={state.activeSection}
-        onTabChange={handlers.scrollToSection}
-        focusMode={state.focusMode}
-        showHeaderInFocus={state.showHeaderInFocus}
-        onProductDetailsClick={() => state.setProductDetailsSheetOpen(true)}
-        currentImageIndex={state.currentImageIndex}
-        totalImages={state.totalImages}
-        onShareClick={() => state.setSharePanelOpen(true)}
-      />
+      {/* Header Section - Conditionally rendered */}
+      {!hideHeader && (
+        <ProductHeaderSection
+          ref={refs.headerRef}
+          activeSection={state.activeSection}
+          onTabChange={handlers.scrollToSection}
+          focusMode={state.focusMode}
+          showHeaderInFocus={state.showHeaderInFocus}
+          onProductDetailsClick={() => state.setProductDetailsSheetOpen(true)}
+          currentImageIndex={state.currentImageIndex}
+          totalImages={state.totalImages}
+          onShareClick={() => state.setSharePanelOpen(true)}
+        />
+      )}
 
       {/* Image Gallery Section */}
       <ProductGallerySection

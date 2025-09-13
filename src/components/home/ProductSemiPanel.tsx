@@ -133,7 +133,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
               ref={scrollContainerRef}
               className="absolute inset-0 overflow-y-auto pt-16"
             >
-              <ProductDetail productId={productId} />
+              <ProductDetail productId={productId} hideHeader={true} />
             </div>
           </div>
         ) : (

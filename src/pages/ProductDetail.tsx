@@ -9,9 +9,10 @@ const DEFAULT_PRODUCT_ID = "aae97882-a3a1-4db5-b4f5-156705cd10ee";
 
 interface ProductDetailProps {
   productId?: string; // Make it optional so it can work with router params too
+  hideHeader?: boolean; // New prop to hide header when used in panels
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ productId: propProductId }) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({ productId: propProductId, hideHeader = false }) => {
   console.log('🚀 ProductDetail component loaded');
 
   const { id: paramId } = useParams<{ id: string }>();
@@ -28,7 +29,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId: propProductId 
     return <ProductDetailError />;
   }
 
-  return <ProductDetailLayout product={product} productId={productId} />;
+  return <ProductDetailLayout product={product} productId={productId} hideHeader={hideHeader} />;
 };
 
 export default ProductDetail;
