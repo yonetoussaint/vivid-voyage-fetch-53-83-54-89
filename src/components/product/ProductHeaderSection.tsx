@@ -27,7 +27,7 @@ const ProductHeaderSection: React.FC<ProductHeaderSectionProps> = ({
   return (
     <div ref={ref} className="relative z-50">
       <ProductHeader 
-        inPanel={true} // Add this prop
+        inPanel={false} // Should be false for fixed positioning and scroll behavior
         activeSection={activeSection}
         onTabChange={onTabChange}
         focusMode={focusMode}
