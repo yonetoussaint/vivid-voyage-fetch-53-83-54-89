@@ -79,14 +79,10 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         {/* Product Header - with scroll-based behavior */}
         <div 
           ref={headerRef} 
-          className="absolute top-0 left-0 right-0 z-50 transition-all duration-300"
-          style={{
-            backgroundColor: `rgba(255, 255, 255, ${scrollProgress * 0.95})`,
-            backdropFilter: `blur(${scrollProgress * 8}px)`,
-          }}
+          className="absolute top-0 left-0 right-0 z-50"
         >
           <ProductHeader 
-            inPanel={false} // Use fixed positioning behavior
+            inPanel={true} // Enable panel behavior
             activeSection={activeSection}
             onTabChange={handleTabChange}
             focusMode={focusMode}
@@ -95,8 +91,8 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
             currentImageIndex={currentImageIndex}
             totalImages={totalImages}
             onShareClick={handleShareClick}
-            forceScrolledState={false} // Let it use actual scroll progress
-            customScrollProgress={scrollProgress} // Pass custom scroll progress
+            forceScrolledState={false}
+            customScrollProgress={scrollProgress}
             actionButtons={[
               {
                 Icon: Heart,
