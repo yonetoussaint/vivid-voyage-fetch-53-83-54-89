@@ -320,7 +320,6 @@ const ProductImageGallery = forwardRef<ProductImageGalleryRef, ProductImageGalle
 
           <PriceInfo
             product={product}
-            bundlePrice={bundlePrice}
             focusMode={focusMode}
             isPlaying={isCurrentVideo ? isPlaying : false}
             configurationData={configurationData || internalConfigData}

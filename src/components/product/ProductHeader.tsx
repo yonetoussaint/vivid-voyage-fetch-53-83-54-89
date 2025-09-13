@@ -33,6 +33,7 @@ interface ProductHeaderProps {
   forceScrolledState?: boolean;
   actionButtons?: ActionButton[];
   inPanel?: boolean; // New prop
+  customScrollProgress?: number; // New prop for external scroll progress
 }
 
 const ProductHeader: React.FC<ProductHeaderProps> = ({ 
@@ -46,11 +47,15 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
   onShareClick,
   forceScrolledState = false,
   actionButtons,
-  inPanel = false // Default to false
+  inPanel = false, // Default to false
+  customScrollProgress // New prop for external scroll progress
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const { progress } = useScrollProgress();
+  const { progress: internalProgress } = useScrollProgress();
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Use custom progress if provided (for panels), otherwise use internal progress
+  const progress = customScrollProgress !== undefined ? customScrollProgress : internalProgress;
 
   // Use forced state or actual scroll progress
   const displayProgress = forceScrolledState ? 1 : progress;
