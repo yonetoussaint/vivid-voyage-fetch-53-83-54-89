@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,8 +17,6 @@ import ProductDetail from "./pages/ProductDetail";
 import SingleProductDetail from "./pages/SingleProductDetail";
 import ProductDescriptionPage from "./pages/ProductDescriptionPage";
 import ProductCheckout from "./pages/ProductCheckout";
-import { ScreenOverlayProvider } from '@/contexts/ScreenOverlayContext';
-
 
 import Videos from "./pages/Videos";
 import Reels from "./pages/Reels";
@@ -69,7 +65,6 @@ import ProductEditSpecsPage from "./pages/ProductEditSpecsPage";
 import ProductEditVariantsPage from "./pages/ProductEditVariantsPage";
 import ProductEditNewVariantPage from "./pages/ProductEditNewVariantPage";
 
-
 import ProductEditDetailsPage from "./pages/ProductEditDetailsPage";
 import ProductEditDescriptionPage from "./pages/ProductEditDescriptionPage";
 import ComponentTestPage from "./pages/ComponentTestPage";
@@ -78,7 +73,7 @@ import SellerDashboard from "./pages/SellerDashboard";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 import { AuthOverlayProvider } from "./context/AuthOverlayContext";
-import { ScreenOverlayProvider } from "./context/ScreenOverlayContext";
+import { ScreenOverlayProvider } from "./context/ScreenOverlayContext"; // SINGLE IMPORT
 import { AuthProvider } from "./contexts/auth/AuthContext";
 
 import "./App.css";
@@ -87,103 +82,100 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-<ScreenOverlayProvider>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <TooltipProvider>
           <CurrencyProvider>
             <Router>
-            <RedirectAuthProvider>
-              <HomepageProvider>
-                <AuthProvider>
-                  <AuthOverlayProvider>
-                    <ScreenOverlayProvider>
-                  <div className="App min-h-screen bg-background text-foreground">
-                  <Routes>
-                    <Route path="/" element={<MainLayout />}>
-                      <Route index element={<ConditionalHomepage />} />
-                      <Route path="for-you" element={<ConditionalHomepage />} />
-                      <Route path="index" element={<Index />} />
-                      <Route path="search" element={<SearchPage />} />
-                        <Route path="product/:id" element={<ProductDetail />} />
-                        <Route path="product/:id/description" element={<ProductDescriptionPage />} />
-                        <Route path="product/:id/comments" element={<ProductCommentsPage />} />
-                        <Route path="product/:id/reviews" element={<ProductReviewsPage />} />
-                        <Route path="product/:id/qa" element={<ProductQAPage />} />
-                        <Route path="product/:id/ask-question" element={<AskQuestionPage />} />
-                        <Route path="single-product/:id" element={<SingleProductDetail />} />
-                        <Route path="single-product/:id/comments" element={<ProductCommentsPage />} />
-                        <Route path="single-product/:id/ask-question" element={<AskQuestionPage />} />
-                      <Route path="posts" element={<CategoriesPage />} />
-                      <Route path="videos" element={<Videos />} />
-                      <Route path="reels" element={<Reels />} />
-                      <Route path="reels/:mode" element={<Reels />} />
-                      <Route path="trending" element={<Trending />} />
-                      <Route path="wallet" element={<Wallet />} />
-                      <Route path="profile" element={<ProfilePage />} />
-                      <Route path="more" element={<MoreMenu />} />
-                      <Route path="more-menu" element={<MoreMenu />} />
-                      <Route path="auth" element={<SimpleAuthPage />} />
-                      <Route path="signin" element={<AuthPage />} />
-                      <Route path="categories" element={<CategoriesPage />} />
-                      <Route path="categories/fashion" element={<FashionPage />} />
-                      <Route path="categories/electronics" element={<ElectronicsPage />} />
-                      <Route path="categories/home-living" element={<HomeLivingPage />} />
-                      <Route path="categories/sports-outdoors" element={<SportsOutdoorsPage />} />
-                      <Route path="categories/automotive" element={<AutomotivePage />} />
-                      <Route path="categories/kids-hobbies" element={<KidsHobbiesPage />} />
-                      <Route path="categories/entertainment" element={<EntertainmentPage />} />
-                      <Route path="admin" element={<AdminPanel />} />
-                      <Route path="seller/:sellerId" element={<SellerPage />} />
-                      <Route path="product/:productId/edit" element={<ProductEditNavigationPage />} />
-                      <Route path="product/:productId/edit/basic" element={<ProductEditBasicPage />} />
-                      <Route path="product/:productId/edit/category" element={<ProductEditCategoryPage />} />
-                      <Route path="product/:productId/edit/media" element={<ProductEditMediaPage />} />
-                      <Route path="product/:productId/edit/shipping" element={<ProductEditShippingPage />} />
-                      <Route path="product/:productId/edit/deals" element={<ProductEditDealsPage />} />
-                      <Route path="product/:productId/edit/specifications" element={<ProductEditSpecsPage />} />
-                        <Route path="product/:productId/edit/variants" element={<ProductEditVariantsPage />} />
-                        <Route path="product/:productId/edit/variants/new" element={<ProductEditNewVariantPage />} />
-                       
-                       
-                       <Route path="product/:productId/edit/details" element={<ProductEditDetailsPage />} />
-                       <Route path="product/:productId/edit/description" element={<ProductEditDescriptionPage />} />
-                      <Route path="checkout" element={<Checkout />} />
-                      <Route path="product-checkout" element={<ProductCheckout />} />
-                      <Route path="paypal-checkout" element={<PayPalCheckout />} />
-                      <Route path="paypal-hosted-checkout" element={<PayPalHostedCheckout />} />
-                      <Route path="paypal-payment" element={<PayPalPayment />} />
-                      <Route path="dynamic-paypal-checkout" element={<DynamicPayPalCheckout />} />
-                      <Route path="paypal-deposit" element={<PayPalDepositPage />} />
-                      <Route path="deposit" element={<DepositPage />} />
-                      <Route path="nft-payment" element={<NFTPaymentPage />} />
-                      <Route path="topup" element={<TopUpPage />} />
-                      <Route path="netflix" element={<NetflixPage />} />
-                      <Route path="transfer-old" element={<TransferPage />} />
-                      <Route path="transfer" element={<TransferHomePage />} />
-                      <Route path="multi-step-transfer" element={<MultiStepTransferPage />} />
-                      <Route path="multi-step-transfer-page" element={<MultiStepTransferSheetPage />} />
-                      <Route path="component-test" element={<ComponentTestPage />} />
-                      <Route path="signup" element={<SimpleAuthPage />} />
-                      <Route path="auth/callback" element={<ForYou />} />
-                      <Route path="seller-dashboard/*" element={<SellerDashboard />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Route>
-                  </Routes>
-                  <Toaster />
-                  <Sonner />
-                  </div>
-                  </ScreenOverlayProvider>
-                </AuthOverlayProvider>
-                </AuthProvider>
-              </HomepageProvider>
-            </RedirectAuthProvider>
+              <RedirectAuthProvider>
+                <HomepageProvider>
+                  <AuthProvider>
+                    <AuthOverlayProvider>
+                      <ScreenOverlayProvider> {/* SINGLE PROVIDER WRAP */}
+                        <div className="App min-h-screen bg-background text-foreground">
+                          <Routes>
+                            <Route path="/" element={<MainLayout />}>
+                              <Route index element={<ConditionalHomepage />} />
+                              <Route path="for-you" element={<ConditionalHomepage />} />
+                              <Route path="index" element={<Index />} />
+                              <Route path="search" element={<SearchPage />} />
+                              <Route path="product/:id" element={<ProductDetail />} />
+                              <Route path="product/:id/description" element={<ProductDescriptionPage />} />
+                              <Route path="product/:id/comments" element={<ProductCommentsPage />} />
+                              <Route path="product/:id/reviews" element={<ProductReviewsPage />} />
+                              <Route path="product/:id/qa" element={<ProductQAPage />} />
+                              <Route path="product/:id/ask-question" element={<AskQuestionPage />} />
+                              <Route path="single-product/:id" element={<SingleProductDetail />} />
+                              <Route path="single-product/:id/comments" element={<ProductCommentsPage />} />
+                              <Route path="single-product/:id/ask-question" element={<AskQuestionPage />} />
+                              <Route path="posts" element={<CategoriesPage />} />
+                              <Route path="videos" element={<Videos />} />
+                              <Route path="reels" element={<Reels />} />
+                              <Route path="reels/:mode" element={<Reels />} />
+                              <Route path="trending" element={<Trending />} />
+                              <Route path="wallet" element={<Wallet />} />
+                              <Route path="profile" element={<ProfilePage />} />
+                              <Route path="more" element={<MoreMenu />} />
+                              <Route path="more-menu" element={<MoreMenu />} />
+                              <Route path="auth" element={<SimpleAuthPage />} />
+                              <Route path="signin" element={<AuthPage />} />
+                              <Route path="categories" element={<CategoriesPage />} />
+                              <Route path="categories/fashion" element={<FashionPage />} />
+                              <Route path="categories/electronics" element={<ElectronicsPage />} />
+                              <Route path="categories/home-living" element={<HomeLivingPage />} />
+                              <Route path="categories/sports-outdoors" element={<SportsOutdoorsPage />} />
+                              <Route path="categories/automotive" element={<AutomotivePage />} />
+                              <Route path="categories/kids-hobbies" element={<KidsHobbiesPage />} />
+                              <Route path="categories/entertainment" element={<EntertainmentPage />} />
+                              <Route path="admin" element={<AdminPanel />} />
+                              <Route path="seller/:sellerId" element={<SellerPage />} />
+                              <Route path="product/:productId/edit" element={<ProductEditNavigationPage />} />
+                              <Route path="product/:productId/edit/basic" element={<ProductEditBasicPage />} />
+                              <Route path="product/:productId/edit/category" element={<ProductEditCategoryPage />} />
+                              <Route path="product/:productId/edit/media" element={<ProductEditMediaPage />} />
+                              <Route path="product/:productId/edit/shipping" element={<ProductEditShippingPage />} />
+                              <Route path="product/:productId/edit/deals" element={<ProductEditDealsPage />} />
+                              <Route path="product/:productId/edit/specifications" element={<ProductEditSpecsPage />} />
+                              <Route path="product/:productId/edit/variants" element={<ProductEditVariantsPage />} />
+                              <Route path="product/:productId/edit/variants/new" element={<ProductEditNewVariantPage />} />
+
+                              <Route path="product/:productId/edit/details" element={<ProductEditDetailsPage />} />
+                              <Route path="product/:productId/edit/description" element={<ProductEditDescriptionPage />} />
+                              <Route path="checkout" element={<Checkout />} />
+                              <Route path="product-checkout" element={<ProductCheckout />} />
+                              <Route path="paypal-checkout" element={<PayPalCheckout />} />
+                              <Route path="paypal-hosted-checkout" element={<PayPalHostedCheckout />} />
+                              <Route path="paypal-payment" element={<PayPalPayment />} />
+                              <Route path="dynamic-paypal-checkout" element={<DynamicPayPalCheckout />} />
+                              <Route path="paypal-deposit" element={<PayPalDepositPage />} />
+                              <Route path="deposit" element={<DepositPage />} />
+                              <Route path="nft-payment" element={<NFTPaymentPage />} />
+                              <Route path="topup" element={<TopUpPage />} />
+                              <Route path="netflix" element={<NetflixPage />} />
+                              <Route path="transfer-old" element={<TransferPage />} />
+                              <Route path="transfer" element={<TransferHomePage />} />
+                              <Route path="multi-step-transfer" element={<MultiStepTransferPage />} />
+                              <Route path="multi-step-transfer-page" element={<MultiStepTransferSheetPage />} />
+                              <Route path="component-test" element={<ComponentTestPage />} />
+                              <Route path="signup" element={<SimpleAuthPage />} />
+                              <Route path="auth/callback" element={<ForYou />} />
+                              <Route path="seller-dashboard/*" element={<SellerDashboard />} />
+                              <Route path="*" element={<NotFound />} />
+                            </Route>
+                          </Routes>
+                          <Toaster />
+                          <Sonner />
+                        </div>
+                      </ScreenOverlayProvider>
+                    </AuthOverlayProvider>
+                  </AuthProvider>
+                </HomepageProvider>
+              </RedirectAuthProvider>
             </Router>
           </CurrencyProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
-</ScreenOverlayProvider>
   );
 }
 
