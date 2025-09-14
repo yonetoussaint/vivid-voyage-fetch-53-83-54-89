@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import ProductDetail from '@/pages/ProductDetail';
 import ProductHeader from '@/components/product/ProductHeader';
 import { Heart, Share } from 'lucide-react';
+import { useScreenOverlay } from "@/contexts/ScreenOverlayContext";
 
 // Custom hook for panel scroll progress
 const usePanelScrollProgress = (scrollContainerRef: React.RefObject<HTMLDivElement>) => {
@@ -44,9 +45,18 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
   const [showHeaderInFocus, setShowHeaderInFocus] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [totalImages, setTotalImages] = useState(0);
+  const { setHasActiveOverlay } = useScreenOverlay();
   
   // Get scroll progress for the panel
   const { progress: scrollProgress } = usePanelScrollProgress(scrollContainerRef);
+
+  // Handle panel state changes to control bottom nav visibility
+  useEffect(() => {
+    setHasActiveOverlay(isOpen);
+    return () => {
+      setHasActiveOverlay(false);
+    };
+  }, [isOpen, setHasActiveOverlay]);
 
   if (!isOpen) return null;
 
@@ -67,14 +77,14 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop with higher z-index */}
       <div 
-        className="fixed inset-0 bg-black/50 z-40"
+        className="fixed inset-0 bg-black/50 z-60"
         onClick={onClose}
       />
 
-      {/* Semi Panel */}
-      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-50 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
+      {/* Semi Panel with higher z-index */}
+      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-60 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
 
         {/* Product Header - with scroll-based behavior */}
         <div 
