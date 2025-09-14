@@ -27,6 +27,42 @@ const usePanelScrollProgress = (scrollContainerRef: React.RefObject<HTMLDivEleme
   return { scrollY, progress };
 };
 
+// Custom hook for panel scroll behavior management (similar to ProductScrollManager)
+const usePanelScrollBehavior = (
+  scrollContainerRef: React.RefObject<HTMLDivElement>,
+  scrollY: number
+) => {
+  const [focusMode, setFocusMode] = useState(false);
+  const [showHeaderInFocus, setShowHeaderInFocus] = useState(false);
+  const [activeSection, setActiveSection] = useState("overview");
+  
+  useEffect(() => {
+    // Handle focus mode based on scroll position
+    if (focusMode && scrollY > 100) {
+      setFocusMode(false);
+    }
+    if (focusMode && scrollY <= 50) {
+      setShowHeaderInFocus(false);
+    }
+    
+    // Handle section detection based on scroll position
+    if (scrollY > 200) {
+      setActiveSection("description");
+    } else {
+      setActiveSection("overview");
+    }
+  }, [scrollY, focusMode]);
+  
+  return {
+    focusMode,
+    setFocusMode,
+    showHeaderInFocus,
+    setShowHeaderInFocus,
+    activeSection,
+    setActiveSection
+  };
+};
+
 interface ProductSemiPanelProps {
   productId: string | null;
   isOpen: boolean;
@@ -40,15 +76,22 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 }) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [activeSection, setActiveSection] = useState("overview");
-  const [focusMode, setFocusMode] = useState(false);
-  const [showHeaderInFocus, setShowHeaderInFocus] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [totalImages, setTotalImages] = useState(0);
   const { setHasActiveOverlay } = useScreenOverlay();
   
   // Get scroll progress for the panel
-  const { progress: scrollProgress } = usePanelScrollProgress(scrollContainerRef);
+  const { scrollY, progress: scrollProgress } = usePanelScrollProgress(scrollContainerRef);
+  
+  // Get scroll behavior state management
+  const {
+    focusMode,
+    setFocusMode,
+    showHeaderInFocus,
+    setShowHeaderInFocus,
+    activeSection,
+    setActiveSection
+  } = usePanelScrollBehavior(scrollContainerRef, scrollY);
 
   // Handle panel state changes to control bottom nav visibility
   useEffect(() => {
@@ -93,7 +136,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
           className="absolute top-0 left-0 right-0 z-50"
         >
           <ProductHeader 
-            inPanel={true} // Enable panel behavior
+            inPanel={false} // Use false to enable proper scroll behavior like ProductDetail
             activeSection={activeSection}
             onTabChange={handleTabChange}
             focusMode={focusMode}
@@ -103,7 +146,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
             totalImages={totalImages}
             onShareClick={handleShareClick}
             forceScrolledState={false}
-            customScrollProgress={scrollProgress}
+            customScrollProgress={scrollProgress} // Still pass the custom scroll progress
             showCloseIcon={true} // Show X icon in panel
             onCloseClick={onClose} // Handle close click
             actionButtons={[
