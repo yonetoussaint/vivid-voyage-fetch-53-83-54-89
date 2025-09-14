@@ -59,10 +59,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   // Use custom progress if provided (for panels), otherwise use internal progress
-  // Make sure customScrollProgress is a number between 0 and 1
-  const progress = customScrollProgress !== undefined ? 
-    Math.min(Math.max(customScrollProgress, 0), 1) : 
-    internalProgress;
+  const progress = customScrollProgress !== undefined ? customScrollProgress : internalProgress;
 
   // Use forced state or actual scroll progress
   const displayProgress = forceScrolledState ? 1 : progress;

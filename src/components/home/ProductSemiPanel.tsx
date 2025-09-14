@@ -4,7 +4,7 @@ import ProductHeader from '@/components/product/ProductHeader';
 import { Heart, Share } from 'lucide-react';
 import { useScreenOverlay } from "@/context/ScreenOverlayContext";
 
-// Custom hook for panel scroll progress
+// Custom hook for panel scroll progress - updated maxScroll for smaller viewport
 const usePanelScrollProgress = (scrollContainerRef: React.RefObject<HTMLDivElement>) => {
   const [scrollY, setScrollY] = useState(0);
 
@@ -21,9 +21,8 @@ const usePanelScrollProgress = (scrollContainerRef: React.RefObject<HTMLDivEleme
     return () => container.removeEventListener("scroll", onScroll);
   }, [scrollContainerRef]);
 
-  // Calculate maxScroll based on the container's height
-  const maxScroll = scrollContainerRef.current ? scrollContainerRef.current.scrollHeight - scrollContainerRef.current.clientHeight : 100;
-  const progress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+  const maxScroll = 80; // Reduced from 120 to account for smaller viewport
+  const progress = Math.min(scrollY / maxScroll, 1);
 
   return { scrollY, progress };
 };
@@ -59,16 +58,12 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     };
   }, [isOpen, setHasActiveOverlay]);
 
-  // Log scroll progress for debugging
-  useEffect(() => {
-    console.log('Scroll progress:', scrollProgress);
-  }, [scrollProgress]);
-
   if (!isOpen) return null;
 
   const handleTabChange = (section: string) => {
     setActiveSection(section);
     console.log('Tab changed to:', section);
+    // You might want to implement scroll-to-section logic here
   };
 
   const handleShareClick = () => {
@@ -77,7 +72,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   const handleProductDetailsClick = () => {
     console.log('Product details clicked');
-    onClose();
+    onClose(); // Or any other action
   };
 
   return (
@@ -89,7 +84,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         style={{ margin: 0, padding: 0 }}
       />
 
-      {/* Semi Panel with reduced height */}
+      {/* Semi Panel with reduced height (70vh instead of 90vh) */}
       <div className="fixed bottom-0 left-0 right-0 h-[70vh] bg-white z-[9999] rounded-t-lg shadow-xl overflow-hidden flex flex-col">
 
         {/* Product Header - with scroll-based behavior */}
@@ -98,7 +93,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
           className="absolute top-0 left-0 right-0 z-50"
         >
           <ProductHeader 
-            inPanel={true}
+            inPanel={true} // Enable panel behavior
             activeSection={activeSection}
             onTabChange={handleTabChange}
             focusMode={focusMode}
@@ -107,10 +102,10 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
             currentImageIndex={currentImageIndex}
             totalImages={totalImages}
             onShareClick={handleShareClick}
-            forceScrolledState={scrollProgress > 0.1} // Show scrolled state when progress > 10%
+            forceScrolledState={false}
             customScrollProgress={scrollProgress}
-            showCloseIcon={true}
-            onCloseClick={onClose}
+            showCloseIcon={true} // Show X icon in panel
+            onCloseClick={onClose} // Handle close click
             actionButtons={[
               {
                 Icon: Heart,
@@ -129,12 +124,11 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
         {/* Scrollable Content with header space */}
         {productId ? (
-          <div className="flex-1 overflow-hidden min-h-0 relative pt-16"> {/* Added padding to account for header */}
+          <div className="flex-1 overflow-hidden min-h-0 relative">
             {/* Scrollable container that we track for scroll progress */}
             <div 
               ref={scrollContainerRef}
               className="absolute inset-0 overflow-y-auto"
-              style={{ top: '4rem' }} /* Adjust based on header height */
             >
               <ProductDetail productId={productId} hideHeader={true} />
             </div>
