@@ -79,8 +79,9 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     <>
       {/* Backdrop with full coverage */}
       <div 
-        className="fixed inset-0 w-screen h-screen bg-black/50 z-[9998]"
+        className="fixed inset-0 bg-black/50 z-[9998]"
         onClick={onClose}
+        style={{ margin: 0, padding: 0 }}
       />
 
       {/* Semi Panel with very high z-index */}
