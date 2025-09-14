@@ -126,7 +126,9 @@ export default function MainLayout() {
           pathname === '/settings' ||
           pathname === '/wallet'
         ) && (
+<div classname=" z-index=30">
           <IndexBottomNav />
+</div>
         )}
 
         {/* Product Upload Overlay */}
