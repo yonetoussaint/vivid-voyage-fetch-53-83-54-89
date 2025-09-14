@@ -104,6 +104,8 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
             onShareClick={handleShareClick}
             forceScrolledState={false}
             customScrollProgress={scrollProgress}
+            showCloseIcon={true} // Show X icon in panel
+            onCloseClick={onClose} // Handle close click
             actionButtons={[
               {
                 Icon: Heart,
