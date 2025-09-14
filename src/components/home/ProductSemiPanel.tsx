@@ -77,14 +77,14 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
 
   return (
     <>
-      {/* Backdrop with higher z-index */}
+      {/* Backdrop with very high z-index */}
       <div 
-        className="fixed inset-0 bg-black/50 z-60"
+        className="fixed inset-0 bg-black/50 z-[9998]"
         onClick={onClose}
       />
 
-      {/* Semi Panel with higher z-index */}
-      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-60 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
+      {/* Semi Panel with very high z-index */}
+      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-[9999] rounded-t-lg shadow-xl overflow-hidden flex flex-col">
 
         {/* Product Header - with scroll-based behavior */}
         <div 
