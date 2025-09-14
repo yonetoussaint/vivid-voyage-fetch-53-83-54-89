@@ -69,12 +69,12 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/50 z-40"
+        className="fixed inset-0 bg-black/50 z-50"
         onClick={onClose}
       />
 
       {/* Semi Panel */}
-      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-50 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
+      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-80 rounded-t-lg shadow-xl overflow-hidden flex flex-col">
 
         {/* Product Header - with scroll-based behavior */}
         <div 
