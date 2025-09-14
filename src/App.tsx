@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,6 +19,8 @@ import ProductDetail from "./pages/ProductDetail";
 import SingleProductDetail from "./pages/SingleProductDetail";
 import ProductDescriptionPage from "./pages/ProductDescriptionPage";
 import ProductCheckout from "./pages/ProductCheckout";
+import { ScreenOverlayProvider } from '@/contexts/ScreenOverlayContext';
+
 
 import Videos from "./pages/Videos";
 import Reels from "./pages/Reels";
@@ -83,6 +87,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
+<ScreenOverlayProvider>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <TooltipProvider>
@@ -178,6 +183,7 @@ function App() {
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
+</ScreenOverlayProvider>
   );
 }
 
