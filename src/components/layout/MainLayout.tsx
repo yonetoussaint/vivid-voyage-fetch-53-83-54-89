@@ -126,7 +126,7 @@ export default function MainLayout() {
           pathname === '/settings' ||
           pathname === '/wallet'
         ) && (
-<div classname=" z-index=30">
+<div classname=" z-30">
           <IndexBottomNav />
 </div>
         )}
