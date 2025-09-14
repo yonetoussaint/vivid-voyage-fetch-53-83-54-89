@@ -34,8 +34,6 @@ interface ProductHeaderProps {
   actionButtons?: ActionButton[];
   inPanel?: boolean; // New prop
   customScrollProgress?: number; // New prop for external scroll progress
-  showCloseIcon?: boolean; // New prop to show X icon
-  onCloseClick?: () => void; // New prop for close handler
 }
 
 const ProductHeader: React.FC<ProductHeaderProps> = ({ 
@@ -50,9 +48,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
   forceScrolledState = false,
   actionButtons,
   inPanel = false, // Default to false
-  customScrollProgress, // New prop for external scroll progress
-  showCloseIcon = false, // New prop for close icon
-  onCloseClick // New prop for close handler
+  customScrollProgress // New prop for external scroll progress
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { progress: internalProgress } = useScrollProgress();
@@ -103,11 +99,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
         <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
           {/* Left side - Back button and CurrencySwitcher */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <BackButton 
-              progress={displayProgress} 
-              showCloseIcon={showCloseIcon}
-              onClick={onCloseClick}
-            />
+            <BackButton progress={displayProgress} />
 
             {/* CurrencySwitcher - only visible in non-scrolled state */}
             {displayProgress < 0.5 && (
