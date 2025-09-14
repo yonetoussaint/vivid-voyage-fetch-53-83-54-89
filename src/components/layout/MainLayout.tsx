@@ -126,9 +126,7 @@ export default function MainLayout() {
           pathname === '/settings' ||
           pathname === '/wallet'
         ) && (
-         <div className="relative z-30"> {/* Add this wrapper */}
-    <IndexBottomNav />
-  </div>
+          <IndexBottomNav />
         )}
 
         {/* Product Upload Overlay */}
