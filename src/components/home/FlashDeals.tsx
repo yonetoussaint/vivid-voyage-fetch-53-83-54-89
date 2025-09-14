@@ -6,7 +6,7 @@ import { fetchFlashDeals, trackProductView } from "@/integrations/supabase/produ
 import SectionHeader from "./SectionHeader";
 import TabsNavigation from "./TabsNavigation";
 import ProductSemiPanel from "./ProductSemiPanel";
-import { useScreenOverlay } from "@/contexts/ScreenOverlayContext"; // Add this import
+import { useScreenOverlay } from "@/context/ScreenOverlayContext";
 
 interface FlashDealsProps {
   productType?: string;

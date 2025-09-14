@@ -4,6 +4,7 @@ interface ScreenOverlayContextType {
   isLanguageScreenOpen: boolean;
   isLocationScreenOpen: boolean;
   isLocationListScreenOpen: boolean;
+  isGenericOverlayOpen: boolean; // Add generic overlay state
   locationListScreenData: {
     title: string;
     items: Array<{ code: string; name: string }>;
@@ -13,6 +14,8 @@ interface ScreenOverlayContextType {
   setLanguageScreenOpen: (open: boolean) => void;
   setLocationScreenOpen: (open: boolean) => void;
   setLocationListScreenOpen: (open: boolean, data?: any) => void;
+  setGenericOverlayOpen: (open: boolean) => void; // Add setter
+  setHasActiveOverlay: (hasOverlay: boolean) => void; // Add compatibility method
   hasActiveOverlay: boolean;
 }
 
@@ -22,6 +25,7 @@ export const ScreenOverlayProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLanguageScreenOpen, setIsLanguageScreenOpen] = useState(false);
   const [isLocationScreenOpen, setIsLocationScreenOpen] = useState(false);
   const [isLocationListScreenOpen, setIsLocationListScreenOpen] = useState(false);
+  const [isGenericOverlayOpen, setIsGenericOverlayOpen] = useState(false); // Add generic overlay state
   const [locationListScreenData, setLocationListScreenData] = useState<any>(null);
 
   const setLanguageScreenOpen = (open: boolean) => {
@@ -37,7 +41,16 @@ export const ScreenOverlayProvider: React.FC<{ children: React.ReactNode }> = ({
     setLocationListScreenData(open ? data : null);
   };
 
-  const hasActiveOverlay = isLanguageScreenOpen || isLocationScreenOpen || isLocationListScreenOpen;
+  const setGenericOverlayOpen = (open: boolean) => {
+    setIsGenericOverlayOpen(open);
+  };
+
+  // Compatibility method - maps to generic overlay
+  const setHasActiveOverlay = (hasOverlay: boolean) => {
+    setIsGenericOverlayOpen(hasOverlay);
+  };
+
+  const hasActiveOverlay = isLanguageScreenOpen || isLocationScreenOpen || isLocationListScreenOpen || isGenericOverlayOpen;
 
   return (
     <ScreenOverlayContext.Provider
@@ -45,10 +58,13 @@ export const ScreenOverlayProvider: React.FC<{ children: React.ReactNode }> = ({
         isLanguageScreenOpen,
         isLocationScreenOpen,
         isLocationListScreenOpen,
+        isGenericOverlayOpen, // Add to provider
         locationListScreenData,
         setLanguageScreenOpen,
         setLocationScreenOpen,
         setLocationListScreenOpen,
+        setGenericOverlayOpen, // Add to provider
+        setHasActiveOverlay, // Add compatibility method
         hasActiveOverlay,
       }}
     >

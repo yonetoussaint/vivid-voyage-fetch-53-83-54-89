@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import ProductDetail from '@/pages/ProductDetail';
 import ProductHeader from '@/components/product/ProductHeader';
 import { Heart, Share } from 'lucide-react';
-import { useScreenOverlay } from "@/contexts/ScreenOverlayContext";
+import { useScreenOverlay } from "@/context/ScreenOverlayContext";
 
 // Custom hook for panel scroll progress
 const usePanelScrollProgress = (scrollContainerRef: React.RefObject<HTMLDivElement>) => {
