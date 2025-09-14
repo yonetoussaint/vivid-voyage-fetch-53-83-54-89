@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchFlashDeals, trackProductView } from "@/integrations/supabase/products";
 import SectionHeader from "./SectionHeader";
 import TabsNavigation from "./TabsNavigation";
-import ProductSemiPanel from "./ProductSemiPanel"; // Import the ProductSemiPanel
+import ProductSemiPanel from "./ProductSemiPanel";
+import { useScreenOverlay } from "@/contexts/ScreenOverlayContext"; // Add this import
 
 interface FlashDealsProps {
   productType?: string;
@@ -14,6 +15,7 @@ interface FlashDealsProps {
 export default function FlashDeals({ productType }: FlashDealsProps) {
   const isMobile = useIsMobile();
   const scrollRef = useRef(null);
+  const { setHasActiveOverlay } = useScreenOverlay(); // Add this
 
   // State for managing the semi panel
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -82,6 +84,11 @@ export default function FlashDeals({ productType }: FlashDealsProps) {
 
     return () => clearInterval(timer);
   }, [flashProducts]);
+
+  // Handle panel open/close to control bottom nav visibility
+  useEffect(() => {
+    setHasActiveOverlay(isPanelOpen);
+  }, [isPanelOpen, setHasActiveOverlay]);
 
   // Calculate discount percentage and real inventory for display
   const processedProducts = flashProducts.map(product => {
