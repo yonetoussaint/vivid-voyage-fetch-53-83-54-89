@@ -4,26 +4,26 @@ import ProductHeader from '@/components/product/ProductHeader';
 import { Heart, Share } from 'lucide-react';
 import { useScreenOverlay } from "@/context/ScreenOverlayContext";
 
-// Custom hook for panel scroll progress
+// Custom hook for panel scroll progress - updated maxScroll for smaller viewport
 const usePanelScrollProgress = (scrollContainerRef: React.RefObject<HTMLDivElement>) => {
   const [scrollY, setScrollY] = useState(0);
-  
+
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    
+
     const onScroll = () => {
       setScrollY(container.scrollTop);
     };
-    
+
     onScroll();
     container.addEventListener("scroll", onScroll, { passive: true });
     return () => container.removeEventListener("scroll", onScroll);
   }, [scrollContainerRef]);
-  
-  const maxScroll = 120;
+
+  const maxScroll = 80; // Reduced from 120 to account for smaller viewport
   const progress = Math.min(scrollY / maxScroll, 1);
-  
+
   return { scrollY, progress };
 };
 
@@ -46,7 +46,7 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [totalImages, setTotalImages] = useState(0);
   const { setHasActiveOverlay } = useScreenOverlay();
-  
+
   // Get scroll progress for the panel
   const { progress: scrollProgress } = usePanelScrollProgress(scrollContainerRef);
 
@@ -84,8 +84,8 @@ const ProductSemiPanel: React.FC<ProductSemiPanelProps> = ({
         style={{ margin: 0, padding: 0 }}
       />
 
-      {/* Semi Panel with very high z-index */}
-      <div className="fixed bottom-0 left-0 right-0 h-[90vh] bg-white z-[9999] rounded-t-lg shadow-xl overflow-hidden flex flex-col">
+      {/* Semi Panel with reduced height (70vh instead of 90vh) */}
+      <div className="fixed bottom-0 left-0 right-0 h-[70vh] bg-white z-[9999] rounded-t-lg shadow-xl overflow-hidden flex flex-col">
 
         {/* Product Header - with scroll-based behavior */}
         <div 
