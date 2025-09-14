@@ -12,8 +12,8 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import SimpleAuthPage from '@/pages/SimpleAuthPage';
 import SignInBanner from './SignInBanner';
 import { useAuth } from '@/contexts/auth/AuthContext';
-import { useScreenOverlay } from '@/context/ScreenOverlayContext';
-import Logo from '@/components/home/Logo'; // fixed import path (lowercase 'home')
+import { useScreenOverlay } from '@/contexts/ScreenOverlayContext'; // Update import path
+import Logo from '@/components/home/Logo';
 import { useTranslation } from 'react-i18next';
 
 interface BottomNavTab {
@@ -43,7 +43,7 @@ export default function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { hasActiveOverlay } = useScreenOverlay();
+  const { hasActiveOverlay } = useScreenOverlay(); // Use the context
   const { t } = useTranslation('home');
 
   const [activeTab, setActiveTab] = useState('home');
